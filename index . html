@@ -4,61 +4,61 @@
   <meta charset="UTF-8">
   <title>Fatimah Abubakar | Personal Website</title>
   <style>
-  body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    background-color: #fdf6e3;
-    color: #333;
-  }
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: #fdf6e3;
+      color: #333;
+    }
 
-  header {
-    background-color: #4a90e2;
-    color: white;
-    text-align: center;
-    padding: 2rem 1rem;
-  }
+    header {
+      background-color: #4a90e2;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
 
-  header h1 {
-    margin: 0;
-    font-size: 2.5rem;
-  }
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
 
-  header p {
-    font-size: 1.2rem;
-  }
+    header p {
+      font-size: 1.2rem;
+    }
 
-  main {
-    padding: 2rem 1rem;
-    max-width: 900px;
-    margin: auto;
-  }
+    main {
+      padding: 2rem 1rem;
+      max-width: 900px;
+      margin: auto;
+    }
 
-  section {
-    margin-bottom: 2rem;
-    padding: 1rem;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  }
+    section {
+      margin-bottom: 2rem;
+      padding: 1rem;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
 
-  h2 {
-    color: #4a90e2;
-  }
+    h2 {
+      color: #4a90e2;
+    }
 
-  footer {
-    text-align: center;
-    padding: 1rem;
-    background-color: #4a90e2;
-    color: white;
-  }
-</style>
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #4a90e2;
+      color: white;
+    }
+  </style>
 </head>
 <body>
 
   <header>
-    <h1>Fatimah Abubakar </h1>
+    <h1>Fatimah Abubakar</h1>
     <p>Aspiring Web Developer</p>
   </header>
 
@@ -86,7 +86,8 @@
     </section>
 
     <section>
-      <h2>Contact:08074850779 </h2>
+      <h2>Contact</h2>
+      <p>Phone: 08074850779</p>
       <p>Email: abubakarfatimah240@gmail.com</p>
     </section>
   </main>
