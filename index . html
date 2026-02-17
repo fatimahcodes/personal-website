@@ -57,7 +57,7 @@
 </head>
 <body>
 
-  <header>
+  <header style="background-color: red; color: white; text-align: center;">
     <h1>Fatimah Abubakar</h1>
     <p>Aspiring Web Developer</p>
   </header>
