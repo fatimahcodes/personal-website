@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fatimah Abubakar | Personal Website</title>
+</head>
+<body>
+
+  <header>
+    <h1>Fatimah Abubakar </h1>
+    <p>Aspiring Web Developer</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>About Me</h2>
+      <p>
+        I am learning web development and building projects to improve my skills.
+        I am passionate about growth, learning, and preparing for my future.
+      </p>
+    </section>
+
+    <section>
+      <h2>Projects</h2>
+      <ul>
+        <li>Cat Photo Description Page</li>
+        <li>Book Store Website</li>
+        <li>Travel Agency Webpage</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Skills</h2>
+      <p>HTML</p>
+    </section>
+
+    <section>
+      <h2>Contact:08074850779 </h2>
+      <p>Email: abubakarfatimah240@gmail.com</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 Fatimah Abubakar</p>
+  </footer>
+
+</body>
+</html>
