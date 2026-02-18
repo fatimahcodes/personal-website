@@ -53,6 +53,38 @@
       background-color: #4a90e2;
       color: white;
     }
+    <style>
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+  }
+
+  .project-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .project-card img {
+    width: 100%;
+    border-radius: 8px;
+  }
+
+  .project-card h3 {
+    margin-top: 0.8rem;
+    color: #4a90e2;
+  }
+
+  .project-card p {
+    font-size: 0.95rem;
+  }
   </style>
 </head>
 <body>
@@ -77,22 +109,33 @@
         I am passionate about growth, learning, and preparing for my future.
       </p>
     </section>
-
     <section>
-      <h2>Projects</h2>
-      <ul>
-        <li><a href="cat-project-link.html"><strong>Cat Photo Description Page </strong></a><br>
-          <img src="cute-cat-photo.jpeg" alt="A cute cat" style="max-width: 100%; border-radius: 8px; margin-top: 10px;">
-          <p style="margin-top: 6px; font-size: 0.9rem; color: #555;">
-    A simple HTML project showcasing a cat photo with description.
-  </p>
-        </li>
-        <li>Book Store Website</li>
-        <li>Travel Agency Webpage</li>
-      </ul>
-    </section>
+  <h2>Projects</h2>
 
-    <section>
+  <div class="projects">
+
+    <div class="project-card">
+      <a href="cat-project-link.html">
+        <img src="cute-cat-photo.jpeg" alt="A cute cat">
+      </a>
+      <h3>Cat Photo Description Page</h3>
+      <p>A simple HTML project showcasing a cat photo with description.</p>
+    </div>
+
+    <div class="project-card">
+      <h3>Book Store Website</h3>
+      <p>A basic website design for browsing and exploring books.</p>
+    </div>
+
+    <div class="project-card">
+      <h3>Travel Agency Webpage</h3>
+      <p>A sample travel website highlighting destinations and services.</p>
+    </div>
+
+  </div>
+</section>
+    
+ <section>
       <h2>Skills</h2>
       <p>HTML</p>
     </section>
