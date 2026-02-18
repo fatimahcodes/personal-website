@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <title>Fatimah Abubakar | Personal Website</title>
   <style>
+    html {
+    scroll-behavior: smooth; /* makes nav links scroll smoothly */
+    }
+    
     body {
       font-family: Arial, sans-serif;
       line-height: 1.6;
@@ -118,7 +122,14 @@
   </style>
 </head>
 <body>
-
+<!-- Navigation Menu -->
+<nav style="background-color:#333; color:white; padding:0.5rem 1rem; text-align:center; position:sticky; top:0; z-index:100;">
+  <a href="#welcome" style="margin:0 15px; color:white; text-decoration:none;">Welcome</a>
+  <a href="#about" style="margin:0 15px; color:white; text-decoration:none;">About</a>
+  <a href="#projects" style="margin:0 15px; color:white; text-decoration:none;">Projects</a>
+  <a href="#skills" style="margin:0 15px; color:white; text-decoration:none;">Skills</a>
+  <a href="#contact" style="margin:0 15px; color:white; text-decoration:none;">Contact</a>
+  </nav>
   <header style="background-color: red; color: white; text-align: center;">
      <img src="profile-photo.png" alt="Fatimah Abubakar" style="width:120px; height:120px; border-radius:50%; display:block; margin:auto;">
     <h1>Fatimah Abubakar</h1>
@@ -126,21 +137,21 @@
   </header>
 
   <main>
-   <section>
+   <section id="welcome">
   <h2>Welcome</h2>
   <p>
     Hello! My name is Fatimah Abubakar. This is my personal website where I document
     my learning journey in web development and share projects I have built.
   </p>
 </section>
-    <section>
+    <section id="about">
       <h2>About Me</h2>
       <p>
         I am learning web development and building projects to improve my skills.
         I am passionate about growth, learning, and preparing for my future.
       </p>
     </section>
-    <section>
+    <section id="projects">
   <h2>Projects</h2>
 
   <div class="projects">
@@ -172,12 +183,12 @@
   </div>
 </section>
     
- <section>
+ <section id="skills">
       <h2>Skills</h2>
       <p>HTML</p>
     </section>
 
-    <section>
+    <section id="contact">
       <h2>Contact</h2>
       <p>Phone: 08074850779</p>
       <p>Email: abubakarfatimah240@gmail.com</p>
