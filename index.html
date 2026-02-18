@@ -119,6 +119,42 @@
     font-size: 0.9rem;
   }
     }
+    <style>
+  body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #fdf6e3;
+    color: #333;
+  }
+
+  /* project cards */
+  .project-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  .project-card a:hover {
+    text-decoration: none;
+    opacity: 0.9;
+    .project-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.project-link:hover .project-card {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+  }
+    .tagline {
+  font-size: 0.95rem;
+  opacity: 0.9;
+  margin-top: 0.3rem;
+}
   </style>
 </head>
 <body>
@@ -134,6 +170,7 @@
      <img src="profile-photo.png" alt="Fatimah Abubakar" style="width:120px; height:120px; border-radius:50%; display:block; margin:auto;">
     <h1>Fatimah Abubakar</h1>
     <p>Aspiring Web Developer</p>
+    <p class="tagline">Building simple, clean websites with HTML</p>
   </header>
 
   <main>
@@ -157,24 +194,24 @@
   <div class="projects">
 
     <!-- Cat Photo Project --> 
+    <a href="cat-project-link.html" class="project-link">
     <div class="project-card">
-      <a href="cat-project-link.html">
         <img src="cute-cat-photo.jpeg" alt="A cute cat" style="display:block;" > 
         <h3>Cat Photo Description Page</h3></a>
       <p>A simple HTML project showcasing a cat photo with description.</p>
     </div>
 
      <!-- Book Store Project -->
+      <a href="book-project-link.html" class="project-link">
     <div class="project-card">
-      <a href="book-store.html">
         <img src="book-project.jpg" alt="Book Store Website preview">
       <h3>Book Store Website</h3></a>
       <p>A basic website design for browsing and exploring books.</p>
     </div>
 
      <!-- Travel Agency Project -->
+      <a href="travel-project-link.html" class="project-link">
     <div class="project-card">
-      <a href="travel-agency.html">
         <img src="travel-project.jpg" alt="Travel Agency Website preview">
       <h3>Travel Agency Webpage</h3></a>
       <p>A sample travel website highlighting destinations and services.</p>
