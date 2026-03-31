@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <title>Fatimah Abubakar | Personal Website</title>
   <style>
+    /* General */
     html {
-    scroll-behavior: smooth; /* makes nav links scroll smoothly */
+      scroll-behavior: smooth;
     }
-    
+
     body {
       font-family: Arial, sans-serif;
       line-height: 1.6;
@@ -17,11 +18,41 @@
       color: #333;
     }
 
+    /* Navigation */
+    nav {
+      background-color: #333;
+      color: white;
+      padding: 0.5rem 1rem;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav a {
+      margin: 0 15px;
+      color: white;
+      text-decoration: none;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* Header */
     header {
       background-color: #4a90e2;
       color: white;
       text-align: center;
       padding: 2rem 1rem;
+    }
+
+    header img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      display: block;
+      margin: auto;
     }
 
     header h1 {
@@ -31,8 +62,16 @@
 
     header p {
       font-size: 1.2rem;
+      margin: 0.5rem 0;
     }
 
+    .tagline {
+      font-size: 0.95rem;
+      opacity: 0.9;
+      margin-top: 0.3rem;
+    }
+
+    /* Main content */
     main {
       padding: 2rem 1rem;
       max-width: 900px;
@@ -51,201 +90,171 @@
       color: #4a90e2;
     }
 
+    /* Project cards */
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .project-card img {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    .project-card h3 {
+      margin-top: 0.8rem;
+      color: #4a90e2;
+    }
+
+    .project-card p {
+      font-size: 0.95rem;
+    }
+
+    .project-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .project-link:hover .project-card {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+    }
+
+    /* Footer */
     footer {
       text-align: center;
       padding: 1rem;
       background-color: #4a90e2;
       color: white;
     }
-  
-  .projects {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-  }
 
-  .project-card {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 1rem;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    transition: transform 0.2s ease;
-  }
+    /* Responsive */
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.8rem;
+      }
 
-  .project-card:hover {
-    transform: translateY(-5px);
-  }
+      header p {
+        font-size: 1rem;
+      }
 
-  .project-card img {
-    width: 100%;
-    border-radius: 8px;
-  }
+      main {
+        padding: 1rem;
+      }
 
-  .project-card h3 {
-    margin-top: 0.8rem;
-    color: #4a90e2;
-  }
+      .projects {
+        grid-template-columns: 1fr;
+      }
 
-  .project-card p {
-    font-size: 0.95rem;
-  }
-    /* Mobile responsiveness */
-@media (max-width: 600px) {
-  header h1 {
-    font-size: 1.8rem;
-  }
+      .project-card {
+        padding: 0.8rem;
+      }
 
-  header p {
-    font-size: 1rem;
-  }
+      .project-card h3 {
+        font-size: 1.1rem;
+      }
 
-  main {
-    padding: 1rem;
-  }
-
-  .projects {
-    grid-template-columns: 1fr; /* Stack cards vertically on small screens */
-  }
-
-  .project-card {
-    padding: 0.8rem;
-  }
-
-  .project-card h3 {
-    font-size: 1.1rem;
-  }
-
-  .project-card p {
-    font-size: 0.9rem;
-  }
+      .project-card p {
+        font-size: 0.9rem;
+      }
     }
-  
-  body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    background-color: #fdf6e3;
-    color: #333;
-  }
-
-  /* project cards */
-  .project-card {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 1rem;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  }
-
-  .project-card a:hover {
-    text-decoration: none;
-    opacity: 0.9;
-    .project-link {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-}
-
-.project-link:hover .project-card {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
-  }
-    .tagline {
-  font-size: 0.95rem;
-  opacity: 0.9;
-  margin-top: 0.3rem;
-}
   </style>
 </head>
 <body>
-<!-- Navigation Menu -->
-<nav style="background-color:#333; color:white; padding:0.5rem 1rem; text-align:center; position:sticky; top:0; z-index:100;">
-  <a href="#welcome" style="margin:0 15px; color:white; text-decoration:none;">Welcome</a>
-  <a href="#about" style="margin:0 15px; color:white; text-decoration:none;">About</a>
-  <a href="#projects" style="margin:0 15px; color:white; text-decoration:none;">Projects</a>
-  <a href="#skills" style="margin:0 15px; color:white; text-decoration:none;">Skills</a>
-  <a href="#contact" style="margin:0 15px; color:white; text-decoration:none;">Contact</a>
-  </nav>
-  <header style="background-color: red; color: white; text-align: center;">
-     <img src="profile-photo.png" alt="Fatimah Abubakar" style="width:120px; height:120px; border-radius:50%; display:block; margin:auto;">
-    <h1>Fatimah Abubakar</h1>
-    <p>Aspiring Web Developer</p>
-    <p class="tagline">Building simple, clean websites with HTML</p>
-  </header>
 
-  <main>
-   <section id="welcome">
-  <h2>Welcome</h2>
-  <p>
-    Hello! My name is Fatimah Abubakar. This is my personal website where I document
-    my learning journey in web development and share projects I have built.
-  </p>
-</section>
-    <section id="about">
-      <h2>About Me</h2>
-      <p>
-        I am learning web development and building projects to improve my skills.
-        I am passionate about growth, learning, and preparing for my future.
-      </p>
-    </section>
-    <section id="projects">
-  <h2>Projects</h2>
+<!-- Navigation -->
+<nav>
+  <a href="#welcome">Welcome</a>
+  <a href="#about">About</a>
+  <a href="#projects">Projects</a>
+  <a href="#skills">Skills</a>
+  <a href="#contact">Contact</a>
+</nav>
 
-  <div class="projects">
+<!-- Header -->
+<header>
+  <img src="profile-photo.png" alt="Fatimah Abubakar">
+  <h1>Fatimah Abubakar</h1>
+  <p>Aspiring Web Developer</p>
+  <p class="tagline">Building simple, clean websites with HTML</p>
+</header>
 
-    <!-- Cat Photo Project --> 
-    <a href="cat-project-link.html" class="project-link">
-    <div class="project-card">
-        <img src="cute-cat-photo.jpeg" alt="A cute cat" style="display:block;" > 
-        <h3>Cat Photo Description Page</h3>
-      <p>A simple HTML project showcasing a cat photo with description.</p>
-    </div>
-    </a>
-    
-     <!-- Book Store Project -->
+<main>
+  <!-- Welcome Section -->
+  <section id="welcome">
+    <h2>Welcome</h2>
+    <p>Hello! My name is Fatimah Abubakar. This is my personal website where I document my learning journey in web development and share projects I have built.</p>
+  </section>
+
+  <!-- About Section -->
+  <section id="about">
+    <h2>About Me</h2>
+    <p>I am learning web development and building projects to improve my skills. I am passionate about growth, learning, and preparing for my future.</p>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="projects">
+      <a href="cat-project-link.html" class="project-link">
+        <div class="project-card">
+          <img src="cute-cat-photo.jpeg" alt="A cute cat">
+          <h3>Cat Photo Description Page</h3>
+          <p>A simple HTML project showcasing a cat photo with description.</p>
+        </div>
+      </a>
       <a href="book-project-link.html" class="project-link">
-    <div class="project-card">
-        <img src="book-project.jpg" alt="Book Store Website preview">
-      <h3>Book Store Website</h3>
-      <p>A basic website design for browsing and exploring books.</p>
-    </div>
-        </a>
-
-     <!-- Travel Agency Project -->
+        <div class="project-card">
+          <img src="book-project.jpg" alt="Book Store Website preview">
+          <h3>Book Store Website</h3>
+          <p>A basic website design for browsing and exploring books.</p>
+        </div>
+      </a>
       <a href="travel-project-link.html" class="project-link">
-    <div class="project-card">
-        <img src="travel-project.jpg" alt="Travel Agency Website preview">
-      <h3>Travel Agency Webpage</h3>
-      <p>A sample travel website highlighting destinations and services.</p>
+        <div class="project-card">
+          <img src="travel-project.jpg" alt="Travel Agency Website preview">
+          <h3>Travel Agency Webpage</h3>
+          <p>A sample travel website highlighting destinations and services.</p>
+        </div>
+      </a>
+      <a href="landing-page.html" class="project-link">
+        <div class="project-card">
+          <img src="landing-page.jpg" alt="Simple landing page preview">
+          <h3>Simple Landing Page</h3>
+          <p>A clean landing page designed to present a product or idea.</p>
+        </div>
+      </a>
     </div>
-        </a>
+  </section>
 
-      <!-- Landing Page Project -->
-  <a href="landing-page.html" class="project-link">
-   <div class="project-card">
-    <img src="landing-page.jpg" alt="Simple landing page preview">
-    <h3>Simple Landing Page</h3>
-  <p>A clean landing page designed to present a product or idea.</p>
-      </div>
-    </a>
-  </div>
-</section>
-    
- <section id="skills">
-      <h2>Skills</h2>
-      <p>HTML</p>
-    </section>
+  <!-- Skills Section -->
+  <section id="skills">
+    <h2>Skills</h2>
+    <p>HTML</p>
+  </section>
 
-    <section id="contact">
-      <h2>Contact</h2>
-      <p>Phone: 08074850779</p>
-      <p>Email: abubakarfatimah240@gmail.com</p>
-    </section>
-  </main>
+  <!-- Contact Section -->
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Phone: 08074850779</p>
+    <p>Email: abubakarfatimah240@gmail.com</p>
+  </section>
+</main>
 
-  <footer>
-    <p>© 2026 Fatimah Abubakar</p>
-  </footer>
+<!-- Footer -->
+<footer>
+  <p>© 2026 Fatimah Abubakar</p>
+</footer>
 
 </body>
-</html>
+                                            </html>
