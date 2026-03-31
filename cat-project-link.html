@@ -3,149 +3,295 @@
 <head>
 <meta charset="UTF-8">
 <title>Fatimah Cat Shop Pro</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-body { margin:0; font-family:Arial; background:#f4f4f4; text-align:center; transition:0.3s;}
-header { background:#ff6f61; color:white; padding:2rem 1rem; position:relative;}
-#cartBtn, #logoutBtn { position:absolute; top:15px; right:15px; }
-#favoritesBtn { position:absolute; top:15px; left:15px; }
-section { padding:3rem 1rem; }
-img { max-width:300px; border-radius:10px; margin-top:1rem; transition:0.3s; }
-img:hover { transform:scale(1.05); }
-button { margin-top:1rem; padding:0.5rem 1rem; border:none; border-radius:5px; background:#ff6f61; color:white; cursor:pointer; transition:0.3s; }
-button:hover { opacity:0.8; background:#e94e77; }
-#cartBox { display:none; position:fixed; right:10px; top:70px; background:white; padding:1rem; width:250px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.2); transition:0.3s; }
-#comments { list-style:none; padding:0; max-width:400px; margin:auto; text-align:left; }
-#comments li { background:white; padding:0.5rem; margin:0.3rem 0; border-radius:5px; }
-footer { background:#333; color:white; padding:1rem; margin-top:2rem; }
-@media(max-width:600px){ img { max-width:90%; } input { width:90%; } }
+:root {
+  --bg:#f4f4f4;
+  --text:#000;
+  --card:#fff;
+  --primary:#ff6f61;
+}
+
+body {
+  margin:0;
+  font-family:Arial;
+  background:var(--bg);
+  color:var(--text);
+  text-align:center;
+}
+
+header {
+  background:var(--primary);
+  color:white;
+  padding:2rem 1rem;
+  position:relative;
+}
+
+#cart {
+  position:absolute;
+  right:15px;
+  top:15px;
+  padding:0.5rem 1rem;
+  background:white;
+  color:var(--primary);
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+}
+
+.filters {
+  margin:1rem 0;
+}
+
+.filters select, #search {
+  padding:0.5rem;
+  margin:0.3rem;
+  border-radius:5px;
+  border:none;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:1rem;
+  padding:1rem;
+}
+
+.card {
+  background:var(--card);
+  padding:1rem;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  transition:0.3s;
+}
+
+.card:hover {
+  transform:translateY(-5px);
+}
+
+.card img {
+  width:100%;
+  border-radius:8px;
+  transition:0.3s;
+}
+
+.card img:hover {
+  transform: scale(1.05);
+}
+
+.card button {
+  margin-top:5px;
+  padding:0.4rem 0.8rem;
+  border:none;
+  border-radius:5px;
+  background:var(--primary);
+  color:white;
+  cursor:pointer;
+}
+
+.card button:hover {
+  opacity:0.8;
+}
+
+#cartBox {
+  position:fixed;
+  top:70px;
+  right:10px;
+  background:var(--card);
+  padding:1rem;
+  width:250px;
+  display:none;
+  border-radius:8px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+
+#cartBox ul {
+  list-style:none;
+  padding:0;
+  margin:0 0 1rem 0;
+  text-align:left;
+}
+
+footer {
+  background:#333;
+  color:white;
+  padding:1rem;
+  margin-top:2rem;
+}
+
+@media (max-width:600px){
+  .grid { grid-template-columns:1fr; }
+}
 </style>
 </head>
 <body>
 
 <header>
-<h1>Fatimah Cat Shop Pro</h1>
-<p>Interactive cat photos you can “collect” and like!</p>
-<button id="logoutBtn" style="display:none;">Logout</button>
-<button id="cartBtn">Cart (0)</button>
-<button id="favoritesBtn">❤️ Favorites (0)</button>
-</header>
+<h1>Fatimah Cat Shop Pro 🐱</h1>
+<p>Adopt or buy adorable cats!</p>
 
-<section>
-<img id="catImg" src="https://picsum.photos/300?random=1" alt="Cute cat">
-<p id="desc">This is a cute cat enjoying a peaceful moment.</p>
-<p id="price">Price: $5</p>
+<input id="search" placeholder="Search cats...">
 
-<div>
-<button onclick="changeCat()">Change Cat</button>
-<button onclick="likeCat()">❤️ Like (<span id="likes">0</span>)</button>
-<button onclick="toggleFavorite()">⭐ Favorite</button>
-<button onclick="addToCart()">🛒 Add to Cart</button>
+<div class="filters">
+<select id="category">
+  <option value="All">All Ages</option>
+  <option value="Kitten">Kitten</option>
+  <option value="Adult">Adult</option>
+  <option value="Senior">Senior</option>
+</select>
+
+<select id="sortPrice">
+  <option value="none">Sort by Price</option>
+  <option value="asc">Low to High</option>
+  <option value="desc">High to Low</option>
+</select>
 </div>
 
-<h3>Comments</h3>
-<ul id="comments"></ul>
-<input type="text" id="commentInput" placeholder="Write a comment">
-<button onclick="addComment()">Post Comment</button>
+<button id="cart">Cart (0)</button>
+</header>
 
-<p><a href="index.html">← Back to Portfolio</a></p>
+<section class="grid" id="catGrid">
+<!-- Cat cards will be inserted dynamically -->
 </section>
 
 <div id="cartBox">
 <h3>Your Cart</h3>
-<ul id="cartList"></ul>
+<ul id="list"></ul>
 <p id="total"></p>
 <button onclick="checkout()">Checkout</button>
 </div>
 
-<script>
-// State
-let currentCat = "cat1";
-let likes = 0;
-let cart = [];
-let favorites = [];
-
-// Elements
-const catImg = document.getElementById("catImg");
-const desc = document.getElementById("desc");
-const likesEl = document.getElementById("likes");
-const priceEl = document.getElementById("price");
-const cartBtn = document.getElementById("cartBtn");
-const cartBox = document.getElementById("cartBox");
-const cartList = document.getElementById("cartList");
-const totalEl = document.getElementById("total");
-const favoritesBtn = document.getElementById("favoritesBtn");
-
-// Functions
-function changeCat(){
-    currentCat = "cat"+Math.floor(Math.random()*1000);
-    catImg.src = "https://picsum.photos/300?random=" + Math.random();
-    desc.textContent = "Another adorable cat appears 🐱";
-    likes = 0;
-    likesEl.textContent = likes;
-    priceEl.textContent = "Price: $"+(Math.floor(Math.random()*10)+5);
-}
-
-function likeCat(){ likes++; likesEl.textContent = likes; }
-
-function addToCart(){
-    let item = {id:currentCat, name:desc.textContent, price:parseInt(priceEl.textContent.replace("Price: $","")), qty:1};
-    let found = cart.find(i=>i.id===item.id);
-    if(found){ found.qty++; } else { cart.push(item); }
-    updateCart();
-}
-
-function updateCart(){
-    cartList.innerHTML='';
-    let total = 0;
-    cart.forEach((i,idx)=>{
-        total += i.price*i.qty;
-        const li = document.createElement("li");
-        li.innerHTML = `${i.name} x${i.qty} <button onclick="removeFromCart(${idx})">x</button>`;
-        cartList.appendChild(li);
-    });
-    totalEl.textContent = "Total: $"+total;
-    cartBtn.textContent = `Cart (${cart.length})`;
-}
-
-function removeFromCart(idx){ cart.splice(idx,1); updateCart(); }
-
-cartBtn.onclick = ()=>{ cartBox.style.display = cartBox.style.display==="block"?"none":"block"; }
-
-function checkout(){ if(cart.length===0) return alert("Cart is empty!"); alert("Order placed! 🎉"); cart=[]; updateCart(); }
-
-// Favorites
-function toggleFavorite(){
-    if(favorites.includes(currentCat)){
-        favorites = favorites.filter(f=>f!==currentCat);
-    } else {
-        favorites.push(currentCat);
-    }
-    favoritesBtn.textContent = `❤️ Favorites (${favorites.length})`;
-}
-
-// Comments
-const commentsEl = document.getElementById("comments");
-const commentInput = document.getElementById("commentInput");
-function addComment(){
-    let text = commentInput.value.trim();
-    if(!text) return;
-    const li = document.createElement("li");
-    li.textContent = text;
-    commentsEl.appendChild(li);
-    commentInput.value='';
-}
-
-// Initialize
-updateCart();
-favoritesBtn.textContent = `❤️ Favorites (${favorites.length})`;
-
-</script>
-
 <footer>
 <p>© 2026 Fatimah Abubakar</p>
-<p>Contact: abubakarfatimah240@gmail.com</p>
+<p>Phone: 08074850779 | Email: abubakarfatimah240@gmail.com</p>
+<p>Instagram | WhatsApp</p>
 </footer>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let catsData = [];
+const catGrid = document.getElementById("catGrid");
+const cartBtn = document.getElementById("cart");
+const cartBox = document.getElementById("cartBox");
+const list = document.getElementById("list");
+const total = document.getElementById("total");
+const search = document.getElementById("search");
+const category = document.getElementById("category");
+const sortPrice = document.getElementById("sortPrice");
+
+// Sample dynamic descriptions
+const descriptions = ["Adorable Kitten 🐱", "Playful Adult Cat 🐾", "Wise Senior Cat 💤", "Curious Cat 😺", "Happy Cat 😻"];
+
+// Fetch cats from The Cat API
+async function loadCats(count=12){
+  const res = await fetch(`https://api.thecatapi.com/v1/images/search?limit=${count}`);
+  const data = await res.json();
+  catsData = data.map(cat => {
+    return { 
+      id: cat.id, 
+      url: cat.url, 
+      price: Math.floor(Math.random()*20)+5, 
+      age: ["Kitten","Adult","Senior"][Math.floor(Math.random()*3)],
+      desc: descriptions[Math.floor(Math.random()*descriptions.length)]
+    };
+  });
+  renderCats();
+}
+
+// Render cats with filters
+function renderCats(){
+  const query = search.value.toLowerCase();
+  const catFilter = category.value;
+  let filtered = catsData.filter(c=> (catFilter==="All"||c.age===catFilter));
+
+  if(sortPrice.value==="asc") filtered.sort((a,b)=>a.price-b.price);
+  if(sortPrice.value==="desc") filtered.sort((a,b)=>b.price-a.price);
+
+  catGrid.innerHTML="";
+  filtered.forEach(c=>{
+    const card = document.createElement("div");
+    card.className="card";
+    card.innerHTML=`
+      <img src="${c.url}" alt="Cute cat">
+      <h4>${c.age} Cat</h4>
+      <p>${c.desc}</p>
+      <p>$${c.price}</p>
+      <button onclick='changeCatImage("${c.id}", this)'>🔄 Change Cat Image</button>
+      <button onclick='likeCat(this)'>❤️ Like (<span>0</span>)</button>
+      <button onclick='addToCart("${c.id}", "${c.url}", ${c.price})'>🛒 Add to Cart</button>
+    `;
+    catGrid.appendChild(card);
+  });
+}
+
+// Change cat image per card
+async function changeCatImage(id, btn){
+  const res = await fetch(`https://api.thecatapi.com/v1/images/search?limit=1`);
+  const data = await res.json();
+  const img = btn.parentElement.querySelector("img");
+  const desc = btn.parentElement.querySelector("p:nth-of-type(2)");
+  img.src = data[0].url;
+  desc.textContent = descriptions[Math.floor(Math.random()*descriptions.length)];
+}
+
+// Like button
+function likeCat(btn){
+  const span = btn.querySelector("span");
+  span.textContent = parseInt(span.textContent)+1;
+}
+
+// Add to cart
+function addToCart(id,url,price){
+  let found = cart.find(c=>c.id===id);
+  if(found) found.qty++;
+  else cart.push({id,url,price,qty:1});
+  saveCart();
+  updateCart();
+}
+
+// Update cart
+function updateCart(){
+  list.innerHTML="";
+  let t=0;
+  cart.forEach((c,idx)=>{
+    t+=c.price*c.qty;
+    let li = document.createElement("li");
+    li.innerHTML=`<img src="${c.url}" width="50"> x${c.qty} ($${c.price} each) 
+      <button onclick="removeFromCart(${idx})">x</button>`;
+    list.appendChild(li);
+  });
+  total.textContent="Total: $"+t;
+  cartBtn.textContent="Cart ("+cart.length+")";
+}
+
+// Remove from cart
+function removeFromCart(idx){
+  cart.splice(idx,1);
+  saveCart();
+  updateCart();
+}
+
+// Checkout
+function checkout(){
+  if(cart.length===0) return alert("Cart empty!");
+  alert("Order placed 🎉");
+  cart=[];
+  saveCart();
+  updateCart();
+}
+
+// Save cart
+function saveCart(){ localStorage.setItem("cart",JSON.stringify(cart)); }
+
+// Event listeners
+search.oninput = renderCats;
+category.onchange = renderCats;
+sortPrice.onchange = renderCats;
+cartBtn.onclick = ()=>cartBox.style.display = cartBox.style.display==="block"?"none":"block";
+
+// Initialize
+loadCats();
+updateCart();
+</script>
+
 </body>
-  </html>
+</html>
