@@ -5,175 +5,64 @@
   <title>Fatimah Abubakar | Personal Website</title>
   <style>
     /* General */
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      margin: 0;
-      padding: 0;
-      background-color: #fdf6e3;
-      color: #333;
-    }
+    html { scroll-behavior: smooth; }
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; background-color: #fdf6e3; color: #333; }
 
     /* Navigation */
     nav {
-      background-color: #333;
-      color: white;
-      padding: 0.5rem 1rem;
-      text-align: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      background-color: #333; color: white; padding: 0.5rem 1rem;
+      text-align: center; position: sticky; top: 0; z-index: 100;
     }
-
-    nav a {
-      margin: 0 15px;
-      color: white;
-      text-decoration: none;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
+    nav a { margin: 0 15px; color: white; text-decoration: none; transition: color 0.3s; }
+    nav a.active { color: #ffd700; font-weight: bold; } /* Highlight active link */
+    nav a:hover { text-decoration: underline; }
 
     /* Header */
     header {
-      background-color: #4a90e2;
-      color: white;
-      text-align: center;
-      padding: 2rem 1rem;
+      background-color: #4a90e2; color: white; text-align: center; padding: 2rem 1rem;
     }
-
-    header img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      display: block;
-      margin: auto;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-    }
-
-    header p {
-      font-size: 1.2rem;
-      margin: 0.5rem 0;
-    }
-
-    .tagline {
-      font-size: 0.95rem;
-      opacity: 0.9;
-      margin-top: 0.3rem;
-    }
+    header img { width: 120px; height: 120px; border-radius: 50%; display: block; margin: auto; }
+    header h1 { margin: 0; font-size: 2.5rem; }
+    header p { font-size: 1.2rem; margin: 0.5rem 0; }
+    .tagline { font-size: 0.95rem; opacity: 0.9; margin-top: 0.3rem; }
 
     /* Main content */
-    main {
-      padding: 2rem 1rem;
-      max-width: 900px;
-      margin: auto;
-    }
-
-    section {
-      margin-bottom: 2rem;
-      padding: 1rem;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-
-    h2 {
-      color: #4a90e2;
-    }
+    main { padding: 2rem 1rem; max-width: 900px; margin: auto; }
+    section { margin-bottom: 2rem; padding: 1rem; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    h2 { color: #4a90e2; }
 
     /* Project cards */
-    .projects {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-    }
+    .projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+    .project-card { background-color: #fff; border-radius: 10px; padding: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer; }
+    .project-card img { width: 100%; border-radius: 8px; }
+    .project-card h3 { margin-top: 0.8rem; color: #4a90e2; }
+    .project-card p { font-size: 0.95rem; }
+    .project-link { text-decoration: none; color: inherit; display: block; }
+    .project-link:hover .project-card { transform: translateY(-5px); box-shadow: 0 6px 14px rgba(0,0,0,0.15); }
 
-    .project-card {
-      background-color: #fff;
-      border-radius: 10px;
-      padding: 1rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .project-card img {
-      width: 100%;
-      border-radius: 8px;
-    }
-
-    .project-card h3 {
-      margin-top: 0.8rem;
-      color: #4a90e2;
-    }
-
-    .project-card p {
-      font-size: 0.95rem;
-    }
-
-    .project-link {
-      text-decoration: none;
-      color: inherit;
-      display: block;
-    }
-
-    .project-link:hover .project-card {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
-    }
+    /* Skills progress bar */
+    .skill { background-color: #eee; border-radius: 10px; margin: 0.5rem 0; overflow: hidden; }
+    .skill-bar { height: 20px; width: 0%; background-color: #4a90e2; text-align: right; padding-right: 0.5rem; line-height: 20px; color: white; border-radius: 10px; transition: width 1s; }
 
     /* Footer */
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background-color: #4a90e2;
-      color: white;
-    }
+    footer { text-align: center; padding: 1rem; background-color: #4a90e2; color: white; }
 
     /* Responsive */
     @media (max-width: 600px) {
-      header h1 {
-        font-size: 1.8rem;
-      }
-
-      header p {
-        font-size: 1rem;
-      }
-
-      main {
-        padding: 1rem;
-      }
-
-      .projects {
-        grid-template-columns: 1fr;
-      }
-
-      .project-card {
-        padding: 0.8rem;
-      }
-
-      .project-card h3 {
-        font-size: 1.1rem;
-      }
-
-      .project-card p {
-        font-size: 0.9rem;
-      }
+      header h1 { font-size: 1.8rem; }
+      header p { font-size: 1rem; }
+      main { padding: 1rem; }
+      .projects { grid-template-columns: 1fr; }
+      .project-card { padding: 0.8rem; }
+      .project-card h3 { font-size: 1.1rem; }
+      .project-card p { font-size: 0.9rem; }
     }
   </style>
 </head>
 <body>
 
 <!-- Navigation -->
-<nav>
+<nav id="navbar">
   <a href="#welcome">Welcome</a>
   <a href="#about">About</a>
   <a href="#projects">Projects</a>
@@ -207,28 +96,28 @@
     <h2>Projects</h2>
     <div class="projects">
       <a href="cat-project-link.html" class="project-link">
-        <div class="project-card">
+        <div class="project-card" onclick="showProjectAlert('Cat Photo Description Page')">
           <img src="cute-cat-photo.jpeg" alt="A cute cat">
           <h3>Cat Photo Description Page</h3>
           <p>A simple HTML project showcasing a cat photo with description.</p>
         </div>
       </a>
       <a href="book-project-link.html" class="project-link">
-        <div class="project-card">
+        <div class="project-card" onclick="showProjectAlert('Book Store Website')">
           <img src="book-project.jpg" alt="Book Store Website preview">
           <h3>Book Store Website</h3>
           <p>A basic website design for browsing and exploring books.</p>
         </div>
       </a>
       <a href="travel-project-link.html" class="project-link">
-        <div class="project-card">
+        <div class="project-card" onclick="showProjectAlert('Travel Agency Webpage')">
           <img src="travel-project.jpg" alt="Travel Agency Website preview">
           <h3>Travel Agency Webpage</h3>
           <p>A sample travel website highlighting destinations and services.</p>
         </div>
       </a>
       <a href="landing-page.html" class="project-link">
-        <div class="project-card">
+        <div class="project-card" onclick="showProjectAlert('Simple Landing Page')">
           <img src="landing-page.jpg" alt="Simple landing page preview">
           <h3>Simple Landing Page</h3>
           <p>A clean landing page designed to present a product or idea.</p>
@@ -240,7 +129,15 @@
   <!-- Skills Section -->
   <section id="skills">
     <h2>Skills</h2>
-    <p>HTML</p>
+    <div class="skill">
+      <div class="skill-bar" data-skill="HTML">HTML</div>
+    </div>
+    <div class="skill">
+      <div class="skill-bar" data-skill="CSS">CSS</div>
+    </div>
+    <div class="skill">
+      <div class="skill-bar" data-skill="JavaScript">JS</div>
+    </div>
   </section>
 
   <!-- Contact Section -->
@@ -256,5 +153,45 @@
   <p>© 2026 Fatimah Abubakar</p>
 </footer>
 
+<!-- JavaScript -->
+<script>
+  // Highlight nav link while scrolling
+  const sections = document.querySelectorAll("section");
+  const navLinks = document.querySelectorAll("nav a");
+
+  window.addEventListener("scroll", () => {
+    let current = "";
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 80;
+      if (scrollY >= sectionTop) current = section.getAttribute("id");
+    });
+    navLinks.forEach(link => link.classList.remove("active"));
+    navLinks.forEach(link => {
+      if (link.getAttribute("href") === "#" + current) link.classList.add("active");
+    });
+  });
+
+  // Animate skill bars on scroll
+  const skillBars = document.querySelectorAll(".skill-bar");
+  window.addEventListener("scroll", () => {
+    skillBars.forEach(bar => {
+      const sectionTop = bar.parentElement.parentElement.offsetTop - window.innerHeight + 100;
+      if (scrollY > sectionTop) {
+        if (bar.dataset.skill === "HTML") bar.style.width = "90%";
+        if (bar.dataset.skill === "CSS") bar.style.width = "75%";
+        if (bar.dataset.skill === "JavaScript") bar.style.width = "60%";
+      }
+    });
+  });
+
+  // Optional project alert on click
+  function showProjectAlert(name) {
+    console.log(`Opening project: ${name}`);
+    // alert(`You clicked on ${name}`); // Uncomment to show alert
+  }
+</script>
+
 </body>
-                                            </html>
+        </html>
+ 
+
