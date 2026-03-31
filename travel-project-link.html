@@ -144,6 +144,23 @@ let destinations = [
   { name:"Istanbul, Turkey", desc:"Where East meets West", type:"Historical", likes:0 }
 ];
 
+// Image files (local)
+const images = [
+  ["images/Paris.jpg"],
+  ["images/Bali.jpg"],
+  ["images/NewYork.jpg"],
+  ["images/Tokyo.jpg","images/Tokyo (1).jpg"],
+  ["images/Rome.jpg","images/Rome (1).jpg"],
+  ["images/Sydney.jpg"],
+  ["images/London.jpg"],
+  ["images/CapeTown.jpg"],
+  ["images/Rio.jpg","images/Rio (1).jpg","images/Rio (2).jpg"],
+  ["images/Istanbul.jpg","images/Istanbul (1).jpg"]
+];
+
+// Track current image for each destination
+let currentImageIndex = Array(destinations.length).fill(0);
+
 const grid = document.getElementById("destinationGrid");
 const search = document.getElementById("search");
 let category = "All";
@@ -154,7 +171,7 @@ function renderDestinations() {
   destinations.filter(d=>(category==="All"||d.type===category)
     && d.name.toLowerCase().includes(search.value.toLowerCase())
   ).forEach((d,i)=>{
-    const imgUrl = `https://source.unsplash.com/400x300/?travel,${encodeURIComponent(d.name)}`;
+    const imgUrl = images[i][currentImageIndex[i]];
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
@@ -170,9 +187,10 @@ function renderDestinations() {
 
 // Change image dynamically
 function changeImage(index){
+  currentImageIndex[index] = (currentImageIndex[index]+1) % images[index].length;
   const card = grid.children[index];
   const img = card.querySelector("img");
-  img.src = `https://source.unsplash.com/400x300/?travel,${encodeURIComponent(destinations[index].name)}&${Date.now()}`;
+  img.src = images[index][currentImageIndex[index]];
 }
 
 // Like destination
@@ -193,6 +211,7 @@ document.querySelectorAll(".filters button").forEach(b=>{
 
 search.oninput = renderDestinations;
 
+// Initial render
 renderDestinations();
 </script>
 
