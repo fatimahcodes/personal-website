@@ -5,89 +5,105 @@
 <title>Fatimah Travel Agency</title>
 <style>
 :root {
-  --bg: #f4f4f4;
-  --text: #000;
-  --primary: #4caf50;
-  --card: #fff;
+  --bg:#f4f4f4;
+  --text:#000;
+  --card:#fff;
+  --primary:#4caf50;
 }
 
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  text-align: center;
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  transition:0.3s;
 }
 
 header {
-  background: var(--primary);
-  color: white;
-  padding: 2rem 1rem;
+  background:var(--primary);
+  color:white;
+  text-align:center;
+  padding:2rem 1rem;
 }
 
-header h1 { margin: 0 0 0.5rem 0; }
-header p { margin: 0.2rem 0; }
+header h1 {margin:0 0 0.5rem 0;}
+header p {margin:0 0 1rem 0;}
 
-section {
-  padding: 3rem 1rem;
+input {
+  padding:0.5rem;
+  width:250px;
+  border-radius:5px;
+  border:none;
+  margin-bottom:1rem;
 }
+
+.filters button {
+  margin:0.2rem;
+  padding:0.5rem 1rem;
+  border:none;
+  border-radius:5px;
+  background:var(--primary);
+  color:white;
+  cursor:pointer;
+  transition:0.3s;
+}
+.filters button.active { background:#357a38; }
+.filters button:hover { transform:scale(1.05); }
 
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-  padding: 1rem;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:1.5rem;
+  padding:2rem 1rem;
 }
 
 .card {
-  background: var(--card);
-  border-radius: 10px;
-  padding: 1rem;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
-  text-align: center;
+  background:var(--card);
+  border-radius:10px;
+  padding:1rem;
+  box-shadow:0 4px 12px rgba(0,0,0,0.1);
+  text-align:center;
+  transition:transform 0.3s, box-shadow 0.3s;
 }
 
 .card:hover {
-  transform: translateY(-7px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  transform:translateY(-5px);
+  box-shadow:0 8px 20px rgba(0,0,0,0.2);
 }
 
 .card img {
-  width: 100%;
-  height: 180px;
-  border-radius: 10px;
-  object-fit: cover;
-  transition: transform 0.3s;
+  width:100%;
+  border-radius:10px;
+  margin-bottom:0.5rem;
+  transition:transform 0.3s;
 }
+.card img:hover { transform:scale(1.05); }
 
-.card img:hover {
-  transform: scale(1.05);
-}
+.card h3 { margin:0.5rem 0 0.3rem 0; }
+.card p { margin:0.2rem 0 0.5rem 0; color:#555; font-size:0.95rem; }
 
-.card h3 { margin: 0.5rem 0; }
-.card p { margin: 0.3rem 0; }
 .card button {
-  margin: 0.3rem;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 5px;
-  background: var(--primary);
-  color: white;
-  cursor: pointer;
-  transition: 0.3s;
+  padding:0.5rem 1rem;
+  border:none;
+  border-radius:5px;
+  background:var(--primary);
+  color:white;
+  cursor:pointer;
+  margin-top:0.3rem;
+  transition:0.3s;
 }
-
-.card button:hover { opacity: 0.85; transform: scale(1.05); }
+.card button:hover { opacity:0.85; transform:scale(1.05); }
 
 footer {
-  background: #333;
-  color: white;
-  padding: 1rem;
+  background:#333;
+  color:white;
+  padding:1rem;
+  text-align:center;
 }
 
 @media(max-width:600px){
-  .grid { grid-template-columns: 1fr; }
+  .grid { grid-template-columns:1fr; }
+  input { width:90%; }
 }
 </style>
 </head>
@@ -95,44 +111,89 @@ footer {
 
 <header>
   <h1>Fatimah Travel Agency</h1>
-  <p>Explore the world with our amazing travel packages!</p>
+  <p>Explore amazing destinations around the world 🌎</p>
+  <input id="search" placeholder="Search destinations...">
+  <div class="filters">
+    <button data="All" class="active">All</button>
+    <button data="Beach">Beaches</button>
+    <button data="City">Cities</button>
+    <button data="Mountain">Mountains</button>
+    <button data="Historical">Historical</button>
+  </div>
 </header>
 
-<section>
-  <div class="grid" id="travelGrid"></div>
-</section>
+<section class="grid" id="destinationGrid"></section>
 
 <footer>
-  <p>© 2026 Fatimah Abubakar</p>
-  <p>Contact: abubakarfatimah240@gmail.com | 08074850779</p>
+<p>© 2026 Fatimah Abubakar</p>
+<p>Contact: abubakarfatimah240@gmail.com | 08074850779</p>
 </footer>
 
 <script>
-// Example travel packages
-const packages = [
-  {title:"Paris Getaway", desc:"Romantic trip to the city of love", price:1200, img:"images/travel-project.jpg"},
-  {title:"Safari Adventure", desc:"Explore African wildlife", price:1500, img:"images/travel-project.jpg"},
-  {title:"Beach Escape", desc:"Relax on sunny beaches", price:900, img:"images/travel-project.jpg"},
-  {title:"Tokyo Explorer", desc:"Discover modern & traditional Japan", price:1300, img:"images/travel-project.jpg"},
-  {title:"Alaskan Cruise", desc:"Cruise through icy landscapes", price:2000, img:"images/travel-project.jpg"},
-  {title:"London Highlights", desc:"See iconic sights of London", price:1100, img:"images/travel-project.jpg"}
+// Destination data
+let destinations = [
+  { name:"Paris, France", desc:"City of lights and love", type:"City", likes:0 },
+  { name:"Bali, Indonesia", desc:"Tropical paradise", type:"Beach", likes:0 },
+  { name:"New York, USA", desc:"The city that never sleeps", type:"City", likes:0 },
+  { name:"Tokyo, Japan", desc:"Modern city with tradition", type:"City", likes:0 },
+  { name:"Rome, Italy", desc:"Ancient ruins and food", type:"Historical", likes:0 },
+  { name:"Sydney, Australia", desc:"Beaches and landmarks", type:"Beach", likes:0 },
+  { name:"London, UK", desc:"Historic streets & palaces", type:"City", likes:0 },
+  { name:"Cape Town, SA", desc:"Scenic landscapes & wildlife", type:"Mountain", likes:0 },
+  { name:"Rio de Janeiro, Brazil", desc:"Carnivals and mountains", type:"Beach", likes:0 },
+  { name:"Istanbul, Turkey", desc:"Where East meets West", type:"Historical", likes:0 }
 ];
 
-const grid = document.getElementById("travelGrid");
+const grid = document.getElementById("destinationGrid");
+const search = document.getElementById("search");
+let category = "All";
 
-packages.forEach((pkg,i)=>{
-  const card = document.createElement("div");
-  card.className = "card";
-  card.innerHTML = `
-    <img src="${pkg.img}" alt="${pkg.title}">
-    <h3>${pkg.title}</h3>
-    <p>${pkg.desc}</p>
-    <p>Price: $${pkg.price}</p>
-    <button onclick="alert('Booking ${pkg.title}!')">Book Now</button>
-    <button onclick="alert('Explore more about ${pkg.title}!')">Explore</button>
-  `;
-  grid.appendChild(card);
+// Render destinations
+function renderDestinations() {
+  grid.innerHTML = "";
+  destinations.filter(d=>(category==="All"||d.type===category)
+    && d.name.toLowerCase().includes(search.value.toLowerCase())
+  ).forEach((d,i)=>{
+    const imgUrl = `https://source.unsplash.com/400x300/?travel,${encodeURIComponent(d.name)}`;
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${imgUrl}" alt="${d.name}">
+      <h3>${d.name}</h3>
+      <p>${d.desc}</p>
+      <button onclick="changeImage(${i})">Change Image</button>
+      <button onclick="likeDestination(${i})">❤️ Like (<span id="likes-${i}">${d.likes}</span>)</button>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// Change image dynamically
+function changeImage(index){
+  const card = grid.children[index];
+  const img = card.querySelector("img");
+  img.src = `https://source.unsplash.com/400x300/?travel,${encodeURIComponent(destinations[index].name)}&${Date.now()}`;
+}
+
+// Like destination
+function likeDestination(index){
+  destinations[index].likes++;
+  document.getElementById(`likes-${index}`).textContent = destinations[index].likes;
+}
+
+// Filter buttons
+document.querySelectorAll(".filters button").forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll(".filters button").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    category=b.getAttribute("data");
+    renderDestinations();
+  };
 });
+
+search.oninput = renderDestinations;
+
+renderDestinations();
 </script>
 
 </body>
