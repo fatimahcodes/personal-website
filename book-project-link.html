@@ -10,51 +10,288 @@
       text-align: center;
       background-color: #f4f4f4;
     }
+
     header {
       background-color: #4a90e2;
       color: white;
       padding: 2rem 1rem;
     }
+
+    header a.back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: white;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+
     section {
-      padding: 3rem 1rem;
+      padding: 2rem 1rem;
     }
-    img {
-      max-width: 300px;
+
+    .book-card {
+      display: inline-block;
+      width: 200px;
+      margin: 1rem;
+      background-color: white;
+      padding: 1rem;
       border-radius: 10px;
-      margin-top: 1rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      cursor: pointer;
+      vertical-align: top;
+      text-align: left;
     }
+
+    .book-card img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+
+    .filters, .search-bar {
+      margin: 1rem 0;
+    }
+
+    .filters button {
+      margin: 0.3rem;
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #4a90e2;
+      color: white;
+    }
+
+    .filters button.active {
+      background-color: #e94e77;
+    }
+
+    #cart {
+      margin-left: 1rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #333;
+      color: white;
+      cursor: pointer;
+    }
+
+    #cartItems {
+      display: none;
+      position: fixed;
+      right: 20px;
+      top: 120px;
+      background: white;
+      border: 1px solid #ccc;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      z-index: 1000;
+      width: 220px;
+      text-align: left;
+    }
+
+    #bookModal {
+      display: none;
+      position: fixed;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      display: flex;
+    }
+
+    #bookModal .modal-content {
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    #bookModal img {
+      width: 150px;
+      border-radius: 8px;
+    }
+
     footer {
       background-color: #333;
       color: white;
       padding: 1rem;
+      margin-top: 2rem;
     }
- /* Mobile responsiveness */
-@media (max-width: 600px) {
-  img {
-    max-width: 90%;
-  }
-  section {
-    padding: 2rem 1rem;
-  }
-}
+
+    input[type="text"] {
+      padding: 0.5rem;
+      width: 200px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    @media(max-width: 600px) {
+      .book-card { width: 90%; margin: 0.5rem auto; }
+      input[type="text"] { width: 80%; }
+    }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>Book Store Website</h1>
-    <p>A basic website design for browsing and exploring books.</p>
-  </header>
+<header>
+  <a href="index.html" class="back-link">← Back to Portfolio</a>
+  <h1>Book Store Website</h1>
+  <p>A basic website design for browsing and exploring books.</p>
 
-  <section>
-    <img src="book-project.jpg" alt="Book Store preview">
-    <p>Here you can showcase a catalog of books and describe the project features.</p>
-  <p><a href="index.html">← Back to Portfolio</a></p>
-  </section>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search books by title...">
+  </div>
 
-  <footer>
-    <p>© 2026 Fatimah Abubakar</p>
-  </footer>
+  <div class="filters">
+    <button data-category="All" class="active">All</button>
+    <button data-category="Storybook">Storybooks</button>
+    <button data-category="Learning">Learning</button>
+    <button data-category="Travel">Travel</button>
+  </div>
+
+  <button id="cart">Cart (0)</button>
+</header>
+
+<section id="bookList"></section>
+
+<div id="cartItems">
+  <h3>Your Cart</h3>
+  <ul id="cartList"></ul>
+  <button onclick="checkout()">Checkout</button>
+</div>
+
+<div id="bookModal">
+  <div class="modal-content">
+    <span id="closeModal" style="float:right; cursor:pointer;">&times;</span>
+    <img id="modalImg" src="" alt="">
+    <h3 id="modalTitle"></h3>
+    <p id="modalDesc"></p>
+    <button id="modalBuyBtn">Add to Cart</button>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Fatimah Abubakar</p>
+</footer>
+
+<script>
+  const books = [
+    { title: "Cat Adventures", category: "Storybook", description: "A fun storybook about a curious cat exploring the world.", img: "book-project.jpg" },
+    { title: "Learning HTML", category: "Learning", description: "A beginner-friendly guide to HTML.", img: "book-project.jpg" },
+    { title: "Travel Stories", category: "Travel", description: "A collection of travel experiences around the globe.", img: "book-project.jpg" },
+    { title: "Mystery Novel", category: "Storybook", description: "A suspenseful story full of twists.", img: "book-project.jpg" },
+    { title: "Science for Kids", category: "Learning", description: "Basic science concepts explained for kids.", img: "book-project.jpg" }
+  ];
+
+  const bookList = document.getElementById('bookList');
+  const cartBtn = document.getElementById('cart');
+  const cartItemsDiv = document.getElementById('cartItems');
+  const cartList = document.getElementById('cartList');
+  const modal = document.getElementById('bookModal');
+  const modalImg = document.getElementById('modalImg');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalDesc = document.getElementById('modalDesc');
+  const modalBuyBtn = document.getElementById('modalBuyBtn');
+  const closeModal = document.getElementById('closeModal');
+  const filterButtons = document.querySelectorAll('.filters button');
+  const searchInput = document.getElementById('searchInput');
+
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  let selectedBook = null;
+  let currentCategory = "All";
+
+  function renderBooks() {
+    const searchText = searchInput.value.toLowerCase();
+    bookList.innerHTML = "";
+    books.filter(b => (currentCategory === "All" || b.category === currentCategory) &&
+                      b.title.toLowerCase().includes(searchText))
+         .forEach(book => {
+      const card = document.createElement('div');
+      card.className = "book-card";
+      card.innerHTML = `
+        <img src="${book.img}" alt="${book.title}">
+        <h3>${book.title}</h3>
+        <p>${book.description}</p>
+      `;
+      card.addEventListener('click', () => openModal(book));
+      bookList.appendChild(card);
+    });
+  }
+
+  function openModal(book) {
+    selectedBook = book;
+    modalImg.src = book.img;
+    modalTitle.textContent = book.title;
+    modalDesc.textContent = book.description;
+    modal.style.display = "flex";
+  }
+
+  closeModal.onclick = () => modal.style.display = "none";
+  window.onclick = (e) => { if(e.target === modal) modal.style.display = "none"; }
+
+  modalBuyBtn.addEventListener('click', () => {
+    if(selectedBook) { addToCart(selectedBook); modal.style.display = "none"; }
+  });
+
+  function addToCart(book) {
+    cart.push(book);
+    saveCart();
+    updateCartDisplay();
+  }
+
+  function removeFromCart(index) {
+    cart.splice(index, 1);
+    saveCart();
+    updateCartDisplay();
+  }
+
+  function updateCartDisplay() {
+    cartBtn.textContent = `Cart (${cart.length})`;
+    cartList.innerHTML = "";
+    cart.forEach((book, index) => {
+      const li = document.createElement('li');
+      li.innerHTML = `${book.title} <button onclick="removeFromCart(${index})">x</button>`;
+      cartList.appendChild(li);
+    });
+  }
+
+  function toggleCart() {
+    cartItemsDiv.style.display = cartItemsDiv.style.display === "block" ? "none" : "block";
+  }
+
+  cartBtn.addEventListener('click', toggleCart);
+
+  function checkout() {
+    if(cart.length === 0) { alert("Your cart is empty!"); return; }
+    const bookNames = cart.map(b => b.title).join(", ");
+    alert(`Thank you! You bought: ${bookNames}`);
+    cart = [];
+    saveCart();
+    updateCartDisplay();
+    cartItemsDiv.style.display = "none";
+  }
+
+  function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentCategory = btn.dataset.category;
+      renderBooks();
+    });
+  });
+
+  searchInput.addEventListener('input', renderBooks);
+
+  renderBooks();
+  updateCartDisplay();
+</script>
 
 </body>
 </html>
