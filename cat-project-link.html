@@ -1,60 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Cat Photo Description Page</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background-color: #f4f4f4;
-    }
-    header {
-      background-color: #ff6f61;
-      color: white;
-      padding: 2rem 1rem;
-    }
-    section {
-      padding: 3rem 1rem;
-    }
-    img {
-      max-width: 300px;
-      border-radius: 10px;
-      margin-top: 1rem;
-    }
-    footer {
-      background-color: #333;
-      color: white;
-      padding: 1rem;
-    }
-  /* Mobile responsiveness */
-@media (max-width: 600px) {
-  img {
-    max-width: 90%;
-  }
-  section {
-    padding: 2rem 1rem;
-  }
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Fatimah Cat Shop Pro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body { margin:0; font-family:Arial; background:#f4f4f4; text-align:center; transition:0.3s;}
+header { background:#ff6f61; color:white; padding:2rem 1rem; position:relative;}
+#cartBtn, #logoutBtn { position:absolute; top:15px; right:15px; }
+#favoritesBtn { position:absolute; top:15px; left:15px; }
+section { padding:3rem 1rem; }
+img { max-width:300px; border-radius:10px; margin-top:1rem; transition:0.3s; }
+img:hover { transform:scale(1.05); }
+button { margin-top:1rem; padding:0.5rem 1rem; border:none; border-radius:5px; background:#ff6f61; color:white; cursor:pointer; transition:0.3s; }
+button:hover { opacity:0.8; background:#e94e77; }
+#cartBox { display:none; position:fixed; right:10px; top:70px; background:white; padding:1rem; width:250px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.2); transition:0.3s; }
+#comments { list-style:none; padding:0; max-width:400px; margin:auto; text-align:left; }
+#comments li { background:white; padding:0.5rem; margin:0.3rem 0; border-radius:5px; }
+footer { background:#333; color:white; padding:1rem; margin-top:2rem; }
+@media(max-width:600px){ img { max-width:90%; } input { width:90%; } }
+</style>
 </head>
 <body>
 
-  <header>
-    <h1>Cat Photo Description Page</h1>
-    <p>A simple HTML project showcasing a cat photo with description.</p>
-  </header>
+<header>
+<h1>Fatimah Cat Shop Pro</h1>
+<p>Interactive cat photos you can “collect” and like!</p>
+<button id="logoutBtn" style="display:none;">Logout</button>
+<button id="cartBtn">Cart (0)</button>
+<button id="favoritesBtn">❤️ Favorites (0)</button>
+</header>
 
-  <section>
-    <img src="cute-cat-photo.jpeg" alt="A cute cat">
-    <p>This is a sample description for the cat photo project.</p>
-  <p><a href="index.html">← Back to Portfolio</a></p>
-  </section>
+<section>
+<img id="catImg" src="https://picsum.photos/300?random=1" alt="Cute cat">
+<p id="desc">This is a cute cat enjoying a peaceful moment.</p>
+<p id="price">Price: $5</p>
 
-  <footer>
-    <p>© 2026 Fatimah Abubakar</p>
-  </footer>
+<div>
+<button onclick="changeCat()">Change Cat</button>
+<button onclick="likeCat()">❤️ Like (<span id="likes">0</span>)</button>
+<button onclick="toggleFavorite()">⭐ Favorite</button>
+<button onclick="addToCart()">🛒 Add to Cart</button>
+</div>
 
+<h3>Comments</h3>
+<ul id="comments"></ul>
+<input type="text" id="commentInput" placeholder="Write a comment">
+<button onclick="addComment()">Post Comment</button>
+
+<p><a href="index.html">← Back to Portfolio</a></p>
+</section>
+
+<div id="cartBox">
+<h3>Your Cart</h3>
+<ul id="cartList"></ul>
+<p id="total"></p>
+<button onclick="checkout()">Checkout</button>
+</div>
+
+<script>
+// State
+let currentCat = "cat1";
+let likes = 0;
+let cart = [];
+let favorites = [];
+
+// Elements
+const catImg = document.getElementById("catImg");
+const desc = document.getElementById("desc");
+const likesEl = document.getElementById("likes");
+const priceEl = document.getElementById("price");
+const cartBtn = document.getElementById("cartBtn");
+const cartBox = document.getElementById("cartBox");
+const cartList = document.getElementById("cartList");
+const totalEl = document.getElementById("total");
+const favoritesBtn = document.getElementById("favoritesBtn");
+
+// Functions
+function changeCat(){
+    currentCat = "cat"+Math.floor(Math.random()*1000);
+    catImg.src = "https://picsum.photos/300?random=" + Math.random();
+    desc.textContent = "Another adorable cat appears 🐱";
+    likes = 0;
+    likesEl.textContent = likes;
+    priceEl.textContent = "Price: $"+(Math.floor(Math.random()*10)+5);
+}
+
+function likeCat(){ likes++; likesEl.textContent = likes; }
+
+function addToCart(){
+    let item = {id:currentCat, name:desc.textContent, price:parseInt(priceEl.textContent.replace("Price: $","")), qty:1};
+    let found = cart.find(i=>i.id===item.id);
+    if(found){ found.qty++; } else { cart.push(item); }
+    updateCart();
+}
+
+function updateCart(){
+    cartList.innerHTML='';
+    let total = 0;
+    cart.forEach((i,idx)=>{
+        total += i.price*i.qty;
+        const li = document.createElement("li");
+        li.innerHTML = `${i.name} x${i.qty} <button onclick="removeFromCart(${idx})">x</button>`;
+        cartList.appendChild(li);
+    });
+    totalEl.textContent = "Total: $"+total;
+    cartBtn.textContent = `Cart (${cart.length})`;
+}
+
+function removeFromCart(idx){ cart.splice(idx,1); updateCart(); }
+
+cartBtn.onclick = ()=>{ cartBox.style.display = cartBox.style.display==="block"?"none":"block"; }
+
+function checkout(){ if(cart.length===0) return alert("Cart is empty!"); alert("Order placed! 🎉"); cart=[]; updateCart(); }
+
+// Favorites
+function toggleFavorite(){
+    if(favorites.includes(currentCat)){
+        favorites = favorites.filter(f=>f!==currentCat);
+    } else {
+        favorites.push(currentCat);
+    }
+    favoritesBtn.textContent = `❤️ Favorites (${favorites.length})`;
+}
+
+// Comments
+const commentsEl = document.getElementById("comments");
+const commentInput = document.getElementById("commentInput");
+function addComment(){
+    let text = commentInput.value.trim();
+    if(!text) return;
+    const li = document.createElement("li");
+    li.textContent = text;
+    commentsEl.appendChild(li);
+    commentInput.value='';
+}
+
+// Initialize
+updateCart();
+favoritesBtn.textContent = `❤️ Favorites (${favorites.length})`;
+
+</script>
+
+<footer>
+<p>© 2026 Fatimah Abubakar</p>
+<p>Contact: abubakarfatimah240@gmail.com</p>
+</footer>
 </body>
-</html>
+  </html>
