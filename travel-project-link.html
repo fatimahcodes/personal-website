@@ -1,60 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Travel Agency Webpage</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background-color: #f4f4f4;
-    }
-    header {
-      background-color: #4caf50;
-      color: white;
-      padding: 2rem 1rem;
-    }
-    section {
-      padding: 3rem 1rem;
-    }
-    img {
-      max-width: 300px;
-      border-radius: 10px;
-      margin-top: 1rem;
-    }
-    footer {
-      background-color: #333;
-      color: white;
-      padding: 1rem;
-    }
-  /* Mobile responsiveness */
-@media (max-width: 600px) {
-  img {
-    max-width: 90%;
-  }
-  section {
-    padding: 2rem 1rem;
-  }
+<meta charset="UTF-8">
+<title>Fatimah Abubakar | Portfolio Landing Page</title>
+<style>
+:root {
+  --bg:#f4f4f4;
+  --text:#000;
+  --card:#fff;
+  --primary:#4a90e2;
 }
-  </style>
+
+body {
+  margin:0;
+  font-family:Arial;
+  background:var(--bg);
+  color:var(--text);
+}
+
+header {
+  background:var(--primary);
+  color:white;
+  padding:2rem 1rem;
+  text-align:center;
+}
+
+header h1 { margin:0.2rem 0; }
+header p { margin:0.2rem 0; }
+
+section {
+  padding:2rem 1rem;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1rem;
+  padding:1rem 0;
+}
+
+.card {
+  background:var(--card);
+  border-radius:10px;
+  padding:1rem;
+  text-align:center;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover { transform:translateY(-5px); box-shadow:0 8px 20px rgba(0,0,0,0.2); }
+
+.card img { width:100%; border-radius:10px; transition: transform 0.3s; }
+.card img:hover { transform:scale(1.05); }
+
+.card button {
+  margin:0.3rem;
+  padding:0.5rem 1rem;
+  border:none;
+  border-radius:5px;
+  background:var(--primary);
+  color:white;
+  cursor:pointer;
+  transition:0.3s;
+}
+.card button:hover { opacity:0.85; transform:scale(1.05); }
+
+footer {
+  background:#333;
+  color:white;
+  text-align:center;
+  padding:1rem;
+}
+
+@media(max-width:600px){
+  .grid { grid-template-columns:1fr; }
+  input { width:90%; margin-top:10px; }
+}
+</style>
 </head>
 <body>
 
-  <header>
-    <h1>Travel Agency Webpage</h1>
-    <p>A sample travel website highlighting destinations and services.</p>
-  </header>
+<header>
+<h1>Welcome to My Portfolio</h1>
+<p>Interactive showcase of my Travel and Book projects</p>
+<p>Contact: 08074850779 | Email: abubakarfatimah240@gmail.com</p>
+</header>
 
-  <section>
-    <img src="travel-project.jpg" alt="Travel Agency preview">
-    <p>Use this page to describe travel packages or destinations.</p>
-  <p><a href="index.html">← Back to Portfolio</a></p>
-  </section>
+<section>
+<h2>Travel Destinations</h2>
+<div class="grid" id="travelGrid"></div>
+</section>
 
-  <footer>
-    <p>© 2026 Fatimah Abubakar</p>
-  </footer>
+<section>
+<h2>Books Collection</h2>
+<div class="grid" id="booksGrid"></div>
+</section>
+
+<footer>
+<p>© 2026 Fatimah Abubakar</p>
+</footer>
+
+<script>
+// --- Travel Store Data ---
+let travelDestinations = [];
+for(let i=1;i<=10;i++){
+  travelDestinations.push({
+    id:i,
+    img:`https://source.unsplash.com/400x300/?travel,${i}`,
+    name:`Destination ${i}`,
+    desc:`Explore Destination ${i}, a wonderful spot!`,
+    price:Math.floor(Math.random()*500)+100,
+    likes:0
+  });
+}
+
+// --- Book Store Data ---
+let books = [];
+for(let i=1;i<=10;i++){
+  books.push({
+    id:i,
+    img:`https://source.unsplash.com/400x300/?book,${i}`,
+    title:`Book ${i}`,
+    desc:`Discover Book ${i}, an amazing read!`,
+    price:Math.floor(Math.random()*30)+5,
+    likes:0
+  });
+}
+
+// --- Rendering Functions ---
+function renderTravel(){
+  const travelGrid=document.getElementById("travelGrid");
+  travelGrid.innerHTML="";
+  travelDestinations.forEach(t=>{
+    const card=document.createElement("div");
+    card.className="card";
+    card.innerHTML=`
+      <img src="${t.img}" id="travelImg-${t.id}">
+      <h4>${t.name}</h4>
+      <p id="travelDesc-${t.id}">${t.desc} - $${t.price}</p>
+      <button onclick="changeTravelImage(${t.id})">Change Image</button>
+      <button onclick="likeTravel(${t.id})">❤️ Like (<span id="travelLikes-${t.id}">${t.likes}</span>)</button>
+    `;
+    travelGrid.appendChild(card);
+  });
+}
+
+function renderBooks(){
+  const booksGrid=document.getElementById("booksGrid");
+  booksGrid.innerHTML="";
+  books.forEach(b=>{
+    const card=document.createElement("div");
+    card.className="card";
+    card.innerHTML=`
+      <img src="${b.img}" id="bookImg-${b.id}">
+      <h4>${b.title}</h4>
+      <p id="bookDesc-${b.id}">${b.desc} - $${b.price}</p>
+      <button onclick="changeBookImage(${b.id})">Change Image</button>
+      <button onclick="likeBook(${b.id})">❤️ Like (<span id="bookLikes-${b.id}">${b.likes}</span>)</button>
+    `;
+    booksGrid.appendChild(card);
+  });
+}
+
+// --- Interaction Functions ---
+function changeTravelImage(id){
+  travelDestinations[id-1].img=`https://source.unsplash.com/400x300/?travel,${Math.random()}`;
+  document.getElementById(`travelImg-${id}`).src=travelDestinations[id-1].img;
+}
+
+function likeTravel(id){
+  travelDestinations[id-1].likes++;
+  document.getElementById(`travelLikes-${id}`).textContent=travelDestinations[id-1].likes;
+}
+
+function changeBookImage(id){
+  books[id-1].img=`https://source.unsplash.com/400x300/?book,${Math.random()}`;
+  document.getElementById(`bookImg-${id}`).src=books[id-1].img;
+}
+
+function likeBook(id){
+  books[id-1].likes++;
+  document.getElementById(`bookLikes-${id}`).textContent=books[id-1].likes;
+}
+
+// Initial Render
+renderTravel();
+renderBooks();
+</script>
 
 </body>
 </html>
