@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Fatimah Cat Shop Pro</title>
+<title>Fatimah Cat Shop</title>
 <style>
 :root {
   --bg:#f4f4f4;
   --text:#000;
   --card:#fff;
   --primary:#ff6f61;
+  --highlight:#ffe066;
 }
 
 body {
@@ -16,282 +17,335 @@ body {
   font-family:Arial;
   background:var(--bg);
   color:var(--text);
-  text-align:center;
+  transition:0.3s;
+}
+
+.dark {
+  --bg:#1e1e1e;
+  --text:#fff;
+  --card:#2c2c2c;
 }
 
 header {
   background:var(--primary);
   color:white;
+  text-align:center;
   padding:2rem 1rem;
-  position:relative;
+  position:sticky;
+  top:0;
+  z-index:100;
 }
 
-#cart {
-  position:absolute;
-  right:15px;
-  top:15px;
-  padding:0.5rem 1rem;
-  background:white;
-  color:var(--primary);
-  border:none;
-  border-radius:5px;
-  cursor:pointer;
-}
+header h1 { margin:0 0 0.5rem 0; }
+header p { margin:0.2rem 0; }
 
-.filters {
-  margin:1rem 0;
-}
-
-.filters select, #search {
+input {
   padding:0.5rem;
-  margin:0.3rem;
+  width:200px;
   border-radius:5px;
   border:none;
+  margin-top:0.5rem;
 }
+
+.filters button {
+  margin:0.5rem 0.2rem;
+  padding:0.5rem 1rem;
+  border:none;
+  border-radius:5px;
+  background:var(--primary);
+  color:white;
+  cursor:pointer;
+  transition:0.3s;
+}
+.filters button.active { background:#e94e77; }
+.filters button:hover { transform:scale(1.05); }
 
 .grid {
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:1rem;
   padding:1rem;
 }
 
 .card {
   background:var(--card);
-  padding:1rem;
   border-radius:10px;
+  padding:1rem;
   box-shadow:0 4px 10px rgba(0,0,0,0.1);
-  transition:0.3s;
+  text-align:center;
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  opacity:0;
+  transform: translateY(20px);
 }
+.card.show { opacity:1; transform: translateY(0); }
 
 .card:hover {
-  transform:translateY(-5px);
+  transform: translateY(-7px);
+  box-shadow:0 8px 20px rgba(0,0,0,0.2);
 }
 
 .card img {
   width:100%;
-  border-radius:8px;
-  transition:0.3s;
+  border-radius:10px;
+  transition: transform 0.3s;
 }
-
-.card img:hover {
-  transform: scale(1.05);
-}
+.card img:hover { transform:scale(1.07); }
 
 .card button {
-  margin-top:5px;
-  padding:0.4rem 0.8rem;
+  margin:0.3rem;
+  padding:0.5rem 1rem;
   border:none;
   border-radius:5px;
   background:var(--primary);
   color:white;
   cursor:pointer;
+  transition:0.3s;
 }
+.card button:hover { opacity:0.85; transform:scale(1.05); }
 
-.card button:hover {
-  opacity:0.8;
-}
-
-#cartBox {
+#cartBox, #checkoutBox {
   position:fixed;
-  top:70px;
   right:10px;
+  top:100px;
+  width:320px;
   background:var(--card);
   padding:1rem;
-  width:250px;
   display:none;
-  border-radius:8px;
+  border-radius:10px;
   box-shadow:0 4px 10px rgba(0,0,0,0.2);
+  max-height:80vh;
+  overflow-y:auto;
+  z-index:200;
 }
 
-#cartBox ul {
-  list-style:none;
-  padding:0;
-  margin:0 0 1rem 0;
-  text-align:left;
+#darkToggle {
+  position:absolute;
+  left:15px;
+  top:15px;
+  cursor:pointer;
+  padding:0.3rem 0.6rem;
+  border:none;
+  border-radius:5px;
+  background:white;
+  color:var(--primary);
 }
 
 footer {
   background:#333;
   color:white;
   padding:1rem;
-  margin-top:2rem;
+  text-align:center;
 }
 
-@media (max-width:600px){
+@media(max-width:600px){
   .grid { grid-template-columns:1fr; }
+  #cartBox, #checkoutBox { width:90%; top:70px; }
 }
 </style>
 </head>
 <body>
 
 <header>
-<h1>Fatimah Cat Shop Pro 🐱</h1>
-<p>Adopt or buy adorable cats!</p>
+  <button id="darkToggle">🌙</button>
+  <h1>Fatimah Cat Shop</h1>
+  <p>Interactive mini cat shop - adorable cats!</p>
+  <p>Contact: 08074850779 | Email: abubakarfatimah240@gmail.com</p>
 
-<input id="search" placeholder="Search cats...">
+  <input id="search" placeholder="Search cats...">
 
-<div class="filters">
-<select id="category">
-  <option value="All">All Ages</option>
-  <option value="Kitten">Kitten</option>
-  <option value="Adult">Adult</option>
-  <option value="Senior">Senior</option>
-</select>
+  <div class="filters">
+    <button data="All" class="active">All</button>
+    <button data="Kitten">Kitten</button>
+    <button data="Adult">Adult</button>
+    <button data="Long Hair">Long Hair</button>
+    <button data="Short Hair">Short Hair</button>
+  </div>
 
-<select id="sortPrice">
-  <option value="none">Sort by Price</option>
-  <option value="asc">Low to High</option>
-  <option value="desc">High to Low</option>
-</select>
-</div>
-
-<button id="cart">Cart (0)</button>
+  <button id="cartBtn">Cart (0)</button>
 </header>
 
-<section class="grid" id="catGrid">
-<!-- Cat cards will be inserted dynamically -->
-</section>
+<div class="grid" id="catGrid"></div>
 
 <div id="cartBox">
 <h3>Your Cart</h3>
-<ul id="list"></ul>
-<p id="total"></p>
-<button onclick="checkout()">Checkout</button>
+<ul id="cartList"></ul>
+<p id="cartTotal"></p>
+<button onclick="showCheckout()">Proceed to Checkout</button>
+</div>
+
+<div id="checkoutBox">
+<h3>Checkout</h3>
+<form id="checkoutForm">
+  <label>Name:</label><br>
+  <input type="text" id="customerName" required><br>
+  <label>Email:</label><br>
+  <input type="email" id="customerEmail" required><br>
+  <label>Phone:</label><br>
+  <input type="tel" id="customerPhone" required><br><br>
+  <h4>Order Summary</h4>
+  <ul id="checkoutList"></ul>
+  <p id="checkoutTotal"></p>
+  <button type="submit">Place Order</button>
+  <button type="button" onclick="closeCheckout()">Cancel</button>
+</form>
 </div>
 
 <footer>
 <p>© 2026 Fatimah Abubakar</p>
-<p>Phone: 08074850779 | Email: abubakarfatimah240@gmail.com</p>
-<p>Instagram | WhatsApp</p>
 </footer>
 
 <script>
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let catsData = [];
+let cats = [];
+let cart = JSON.parse(localStorage.getItem("cart"))||[];
+let likesData = JSON.parse(localStorage.getItem("likes"))||{};
 const catGrid = document.getElementById("catGrid");
-const cartBtn = document.getElementById("cart");
-const cartBox = document.getElementById("cartBox");
-const list = document.getElementById("list");
-const total = document.getElementById("total");
 const search = document.getElementById("search");
-const category = document.getElementById("category");
-const sortPrice = document.getElementById("sortPrice");
+const cartList = document.getElementById("cartList");
+const cartTotal = document.getElementById("cartTotal");
+const cartBtn = document.getElementById("cartBtn");
+const checkoutBox = document.getElementById("checkoutBox");
+let category = "All";
 
-// Sample dynamic descriptions
-const descriptions = ["Adorable Kitten 🐱", "Playful Adult Cat 🐾", "Wise Senior Cat 💤", "Curious Cat 😺", "Happy Cat 😻"];
+// Dark Mode
+const darkToggle = document.getElementById("darkToggle");
+darkToggle.onclick = ()=>{
+  document.body.classList.toggle("dark");
+  localStorage.setItem("theme",document.body.classList.contains("dark"));
+};
+if(localStorage.getItem("theme")==="true") document.body.classList.add("dark");
 
-// Fetch cats from The Cat API
-async function loadCats(count=12){
-  const res = await fetch(`https://api.thecatapi.com/v1/images/search?limit=${count}`);
-  const data = await res.json();
-  catsData = data.map(cat => {
-    return { 
-      id: cat.id, 
-      url: cat.url, 
-      price: Math.floor(Math.random()*20)+5, 
-      age: ["Kitten","Adult","Senior"][Math.floor(Math.random()*3)],
-      desc: descriptions[Math.floor(Math.random()*descriptions.length)]
-    };
-  });
-  renderCats();
+function getRandomType() {
+  const types = ["Kitten","Adult","Long Hair","Short Hair"];
+  return types[Math.floor(Math.random()*types.length)];
+}
+function getRandomPrice() {
+  return (Math.floor(Math.random()*15)+5);
 }
 
-// Render cats with filters
-function renderCats(){
-  const query = search.value.toLowerCase();
-  const catFilter = category.value;
-  let filtered = catsData.filter(c=> (catFilter==="All"||c.age===catFilter));
+// Fetch 20 cat images
+async function fetchCats() {
+  try {
+    const res = await fetch("https://api.thecatapi.com/v1/images/search?limit=20");
+    const data = await res.json();
+    cats = data.map((c,i)=>({
+      id:i,
+      img:c.url,
+      desc:`Adorable cat ${i+1}`,
+      type:getRandomType(),
+      price:getRandomPrice(),
+      likes:likesData[i]||0
+    }));
+    renderCats();
+    updateCart();
+  } catch(err) {
+    catGrid.innerHTML="<p>Failed to load cats.</p>";
+    console.error(err);
+  }
+}
 
-  if(sortPrice.value==="asc") filtered.sort((a,b)=>a.price-b.price);
-  if(sortPrice.value==="desc") filtered.sort((a,b)=>b.price-a.price);
-
+function renderCats() {
   catGrid.innerHTML="";
-  filtered.forEach(c=>{
+  cats.filter(cat=>(category==="All"||cat.type===category)
+    && cat.desc.toLowerCase().includes(search.value.toLowerCase())
+  ).forEach(cat=>{
     const card = document.createElement("div");
     card.className="card";
     card.innerHTML=`
-      <img src="${c.url}" alt="Cute cat">
-      <h4>${c.age} Cat</h4>
-      <p>${c.desc}</p>
-      <p>$${c.price}</p>
-      <button onclick='changeCatImage("${c.id}", this)'>🔄 Change Cat Image</button>
-      <button onclick='likeCat(this)'>❤️ Like (<span>0</span>)</button>
-      <button onclick='addToCart("${c.id}", "${c.url}", ${c.price})'>🛒 Add to Cart</button>
+      <img src="${cat.img}" id="catImg-${cat.id}">
+      <p id="desc-${cat.id}">${cat.desc} (${cat.type}) - $${cat.price}</p>
+      <button onclick="changeCat(${cat.id})">Change Cat Image</button>
+      <button onclick="likeCat(${cat.id})">❤️ Like (<span id="likes-${cat.id}">${cat.likes}</span>)</button>
+      <button onclick="addToCart(${cat.id})">Add to Cart</button>
     `;
     catGrid.appendChild(card);
+    setTimeout(()=>card.classList.add("show"),50); // animation
   });
 }
 
-// Change cat image per card
-async function changeCatImage(id, btn){
-  const res = await fetch(`https://api.thecatapi.com/v1/images/search?limit=1`);
-  const data = await res.json();
-  const img = btn.parentElement.querySelector("img");
-  const desc = btn.parentElement.querySelector("p:nth-of-type(2)");
-  img.src = data[0].url;
-  desc.textContent = descriptions[Math.floor(Math.random()*descriptions.length)];
+async function changeCat(id){
+  try{
+    const res = await fetch("https://api.thecatapi.com/v1/images/search");
+    const data = await res.json();
+    cats[id].img = data[0].url;
+    cats[id].desc = `A new adorable cat appears!`;
+    cats[id].price = getRandomPrice();
+    document.getElementById(`catImg-${id}`).src = cats[id].img;
+    document.getElementById(`desc-${id}`).textContent = `${cats[id].desc} (${cats[id].type}) - $${cats[id].price}`;
+  }catch(err){console.error(err);}
 }
 
-// Like button
-function likeCat(btn){
-  const span = btn.querySelector("span");
-  span.textContent = parseInt(span.textContent)+1;
+function likeCat(id){
+  cats[id].likes++;
+  likesData[id] = cats[id].likes;
+  localStorage.setItem("likes",JSON.stringify(likesData));
+  document.getElementById(`likes-${id}`).textContent=cats[id].likes;
 }
 
-// Add to cart
-function addToCart(id,url,price){
+function addToCart(id){
   let found = cart.find(c=>c.id===id);
-  if(found) found.qty++;
-  else cart.push({id,url,price,qty:1});
-  saveCart();
+  if(found){found.qty++;}
+  else{cart.push({...cats[id], qty:1});}
+  localStorage.setItem("cart",JSON.stringify(cart));
   updateCart();
 }
 
-// Update cart
 function updateCart(){
-  list.innerHTML="";
-  let t=0;
-  cart.forEach((c,idx)=>{
-    t+=c.price*c.qty;
-    let li = document.createElement("li");
-    li.innerHTML=`<img src="${c.url}" width="50"> x${c.qty} ($${c.price} each) 
-      <button onclick="removeFromCart(${idx})">x</button>`;
-    list.appendChild(li);
+  cartList.innerHTML="";
+  let total=0;
+  cart.forEach((c,i)=>{
+    total+=c.qty*c.price;
+    let li=document.createElement("li");
+    li.innerHTML=`${c.desc} x${c.qty} - $${c.price*c.qty} <button onclick="removeCart(${i})">x</button>`;
+    cartList.appendChild(li);
   });
-  total.textContent="Total: $"+t;
-  cartBtn.textContent="Cart ("+cart.length+")";
+  cartTotal.textContent="Total: $"+total;
+  cartBtn.textContent=`Cart (${cart.length})`;
 }
 
-// Remove from cart
-function removeFromCart(idx){
-  cart.splice(idx,1);
-  saveCart();
-  updateCart();
+function removeCart(i){ cart.splice(i,1); localStorage.setItem("cart",JSON.stringify(cart)); updateCart(); }
+
+function showCheckout(){
+  if(cart.length===0) return alert("Cart is empty");
+  document.getElementById("checkoutList").innerHTML="";
+  let total=0;
+  cart.forEach(c=>{
+    total+=c.qty*c.price;
+    const li = document.createElement("li");
+    li.textContent=`${c.desc} x${c.qty} - $${c.price*c.qty}`;
+    document.getElementById("checkoutList").appendChild(li);
+  });
+  document.getElementById("checkoutTotal").textContent="Total: $"+total;
+  checkoutBox.style.display="block";
 }
 
-// Checkout
-function checkout(){
-  if(cart.length===0) return alert("Cart empty!");
-  alert("Order placed 🎉");
+function closeCheckout(){ checkoutBox.style.display="none"; }
+
+document.getElementById("checkoutForm").onsubmit=function(e){
+  e.preventDefault();
+  alert("Order placed successfully 🎉\nThank you, "+document.getElementById("customerName").value+"!");
   cart=[];
-  saveCart();
+  localStorage.setItem("cart",JSON.stringify(cart));
   updateCart();
+  closeCheckout();
+};
+
+document.querySelectorAll(".filters button").forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll(".filters button").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    category=b.getAttribute("data");
+    renderCats();
+  };
+});
+
+search.oninput=renderCats;
+
+cartBtn.onclick=()=>{
+  const box = document.getElementById("cartBox");
+  box.style.display = box.style.display==="block"?"none":"block";
 }
 
-// Save cart
-function saveCart(){ localStorage.setItem("cart",JSON.stringify(cart)); }
-
-// Event listeners
-search.oninput = renderCats;
-category.onchange = renderCats;
-sortPrice.onchange = renderCats;
-cartBtn.onclick = ()=>cartBox.style.display = cartBox.style.display==="block"?"none":"block";
-
-// Initialize
-loadCats();
-updateCart();
+fetchCats();
 </script>
-
 </body>
-</html>
+    </html>
