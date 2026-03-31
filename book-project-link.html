@@ -1,287 +1,289 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Book Store Website</title>
+<meta charset="UTF-8">
+<title>Fatimah Book Store</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      text-align: center;
-    }
+<style>
+:root {
+  --bg:#f4f4f4;
+  --text:#000;
+  --card:#fff;
+  --primary:#4a90e2;
+}
 
-    header {
-      background-color: #4a90e2;
-      color: white;
-      padding: 2rem 1rem;
-      position: relative;
-    }
+.dark {
+  --bg:#1e1e1e;
+  --text:#fff;
+  --card:#2c2c2c;
+}
 
-    .back-link {
-      display: block;
-      color: white;
-      text-decoration: underline;
-      margin-bottom: 10px;
-    }
+body {
+  margin:0;
+  font-family:Arial;
+  background:var(--bg);
+  color:var(--text);
+  transition:0.3s;
+}
 
-    #cart {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: #333;
-      color: white;
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+header {
+  background:var(--primary);
+  color:white;
+  padding:1.5rem;
+  position:relative;
+  text-align:center;
+}
 
-    .search-bar, .filters {
-      margin: 1rem 0;
-    }
+#cart, #darkToggle {
+  position:absolute;
+  top:15px;
+}
 
-    input {
-      padding: 0.5rem;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
+#cart { right:15px; }
+#darkToggle { left:15px; }
 
-    .filters button {
-      margin: 0.3rem;
-      padding: 0.5rem;
-      border: none;
-      border-radius: 5px;
-      background: #4a90e2;
-      color: white;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+input {
+  padding:0.5rem;
+  width:200px;
+  border-radius:5px;
+  border:none;
+}
 
-    .filters button:hover {
-      background: #357ABD;
-    }
+.filters button {
+  margin:5px;
+  padding:0.5rem;
+  border:none;
+  border-radius:5px;
+  background:var(--primary);
+  color:white;
+  cursor:pointer;
+  transition:0.2s;
+}
 
-    .filters button.active {
-      background: #e94e77;
-    }
+.filters button.active { background:#e94e77; }
 
-    .book-card {
-      display: inline-block;
-      width: 200px;
-      margin: 1rem;
-      background: white;
-      padding: 1rem;
-      border-radius: 10px;
-      text-align: left;
-      cursor: pointer;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
+button:hover {
+  opacity:0.8;
+  transform:scale(1.05);
+}
 
-    .book-card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-    }
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:1rem;
+  padding:1rem;
+}
 
-    .book-card img {
-      width: 100%;
-      border-radius: 8px;
-    }
+.book {
+  background:var(--card);
+  padding:1rem;
+  border-radius:10px;
+  transition:0.3s;
+}
 
-    .book-card button {
-      width: 100%;
-      padding: 0.5rem;
-      margin-top: 5px;
-      border: none;
-      background: #4a90e2;
-      color: white;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+.book:hover {
+  transform:translateY(-5px);
+}
 
-    .book-card button:hover {
-      background: #357ABD;
-    }
+.book img { width:100%; }
 
-    #cartItems {
-      display: none;
-      position: fixed;
-      right: 20px;
-      top: 80px;
-      background: white;
-      padding: 1rem;
-      border-radius: 10px;
-      width: 220px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      text-align: left;
-    }
+.book button {
+  width:100%;
+  margin-top:5px;
+  background:var(--primary);
+  color:white;
+}
 
-    #bookModal {
-      display: none;
-      position: fixed;
-      top:0; left:0; right:0; bottom:0;
-      background: rgba(0,0,0,0.6);
-      justify-content: center;
-      align-items: center;
-    }
+#cartBox {
+  position:fixed;
+  right:10px;
+  top:70px;
+  background:var(--card);
+  padding:1rem;
+  width:250px;
+  display:none;
+  border-radius:10px;
+}
 
-    .modal-content {
-      background: white;
-      padding: 1rem;
-      border-radius: 10px;
-      max-width: 400px;
-    }
+footer {
+  background:#333;
+  color:white;
+  padding:1rem;
+  text-align:center;
+}
 
-    footer {
-      background: #333;
-      color: white;
-      padding: 1rem;
-      margin-top: 2rem;
-    }
+/* MOBILE FIX */
+@media(max-width:600px){
+  input {
+    width:90%;
+    margin-top:10px;
+  }
 
-    @media(max-width:600px){
-      .book-card { width: 90%; }
-    }
+  header {
+    padding:1rem;
+  }
 
-  </style>
+  #cart, #darkToggle {
+    position:static;
+    margin:5px;
+  }
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <a href="index.html" class="back-link">← Back to Portfolio</a>
+<button id="darkToggle">🌙</button>
+<h2>Fatimah Book Store</h2>
 
-  <h1>Book Store Website</h1>
+<input id="search" placeholder="Search books...">
 
-  <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Search books...">
-  </div>
+<div class="filters">
+<button data="All" class="active">All</button>
+<button data="Storybook">Storybooks</button>
+<button data="Learning">Learning</button>
+<button data="Travel">Travel</button>
+</div>
 
-  <div class="filters">
-    <button data-category="All" class="active">All</button>
-    <button data-category="Storybook">Storybooks</button>
-    <button data-category="Learning">Learning</button>
-    <button data-category="Travel">Travel</button>
-  </div>
-
-  <button id="cart">Cart (0)</button>
+<button id="cart">Cart (0)</button>
 </header>
 
-<section id="bookList"></section>
+<div class="grid" id="books"></div>
 
-<div id="cartItems">
-  <h3>Your Cart</h3>
-  <ul id="cartList"></ul>
-  <button onclick="checkout()">Checkout</button>
+<div id="cartBox">
+<h3>Your Cart</h3>
+<ul id="list"></ul>
+<p id="total"></p>
+<button onclick="checkout()">Checkout</button>
 </div>
 
 <footer>
-  <p>© 2026 Fatimah Abubakar</p>
+<p>© 2026 Fatimah Abubakar</p>
+<p>Contact: abubakarfatimah240@gmail.com</p>
+<p>
+<a href="#">Instagram</a> | 
+<a href="#">WhatsApp</a>
+</p>
 </footer>
 
 <script>
-const books = [
-  {title:"Cat Adventures", category:"Storybook", price:10, img:"https://picsum.photos/200/300?1"},
-  {title:"Learning HTML", category:"Learning", price:12, img:"https://picsum.photos/200/300?2"},
-  {title:"Travel Stories", category:"Travel", price:15, img:"https://picsum.photos/200/300?3"},
-  {title:"Mystery Novel", category:"Storybook", price:11, img:"https://picsum.photos/200/300?4"},
-  {title:"Science for Kids", category:"Learning", price:9, img:"https://picsum.photos/200/300?5"}
+const data=[
+{t:"Cat Adventures",c:"Storybook",p:10,img:"https://picsum.photos/200/300?1"},
+{t:"Learning HTML",c:"Learning",p:12,img:"https://picsum.photos/200/300?2"},
+{t:"Travel Stories",c:"Travel",p:15,img:"https://picsum.photos/200/300?3"},
+{t:"Mystery Novel",c:"Storybook",p:11,img:"https://picsum.photos/200/300?4"},
+{t:"Science for Kids",c:"Learning",p:9,img:"https://picsum.photos/200/300?5"}
 ];
 
-const bookList = document.getElementById("bookList");
-const cartBtn = document.getElementById("cart");
-const cartList = document.getElementById("cartList");
-const cartItemsDiv = document.getElementById("cartItems");
-const searchInput = document.getElementById("searchInput");
-const filterButtons = document.querySelectorAll(".filters button");
+let cart=JSON.parse(localStorage.getItem("cart"))||[];
+let cat="All";
 
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let currentCategory = "All";
+const books=document.getElementById("books");
+const search=document.getElementById("search");
+const list=document.getElementById("list");
+const total=document.getElementById("total");
+const cartBtn=document.getElementById("cart");
 
-function renderBooks(){
-  const search = searchInput.value.toLowerCase();
-
-  bookList.innerHTML = "";
-
-  books.filter(b =>
-    (currentCategory==="All" || b.category===currentCategory) &&
-    b.title.toLowerCase().includes(search)
-  ).forEach(book=>{
-    const card = document.createElement("div");
-    card.className="book-card";
-
-    card.innerHTML=`
-      <img src="${book.img}">
-      <h3>${book.title}</h3>
-      <p><strong>$${book.price}</strong></p>
-      <button onclick='addToCart(${JSON.stringify(book)})'>Add to Cart</button>
-    `;
-
-    bookList.appendChild(card);
-  });
+function render(){
+books.innerHTML="";
+data.filter(b=>
+(cat==="All"||b.c===cat)&&
+b.t.toLowerCase().includes(search.value.toLowerCase())
+).forEach(b=>{
+let d=document.createElement("div");
+d.className="book";
+d.innerHTML=`
+<img src="${b.img}">
+<h4>${b.t}</h4>
+<p>$${b.p}</p>
+<button onclick='add(${JSON.stringify(b)})'>Add to Cart</button>
+`;
+books.appendChild(d);
+});
 }
 
-function addToCart(book){
-  cart.push(book);
-  saveCart();
-  updateCart();
+function add(b){
+let found=cart.find(i=>i.t===b.t);
+if(found){found.q++;}
+else{b.q=1;cart.push(b);}
+
+alert(b.t + " added to cart ✅");
+
+save();
+update();
 }
 
-function updateCart(){
-  cartBtn.textContent = `Cart (${cart.length})`;
-  cartList.innerHTML="";
+function update(){
+list.innerHTML="";
+let t=0;
 
-  cart.forEach((b,i)=>{
-    const li=document.createElement("li");
-    li.innerHTML=`${b.title} <button onclick="removeItem(${i})">x</button>`;
-    cartList.appendChild(li);
-  });
+if(cart.length===0){
+  list.innerHTML="<p>No items yet</p>";
 }
 
-function removeItem(i){
-  cart.splice(i,1);
-  saveCart();
-  updateCart();
-}
-
-function saveCart(){
-  localStorage.setItem("cart",JSON.stringify(cart));
-}
-
-cartBtn.onclick=()=>{
-  cartItemsDiv.style.display =
-  cartItemsDiv.style.display==="block"?"none":"block";
-}
-
-function checkout(){
-  if(cart.length===0){
-    alert("Cart is empty");
-    return;
-  }
-
-  const total = cart.reduce((sum,b)=>sum+b.price,0);
-  alert("Total: $" + total);
-
-  cart=[];
-  saveCart();
-  updateCart();
-}
-
-filterButtons.forEach(btn=>{
-  btn.onclick=()=>{
-    filterButtons.forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-    currentCategory=btn.dataset.category;
-    renderBooks();
-  }
+cart.forEach((i,idx)=>{
+t+=i.p*i.q;
+let li=document.createElement("li");
+li.innerHTML=`${i.t} x${i.q} 
+<button onclick="remove(${idx})">x</button>`;
+list.appendChild(li);
 });
 
-searchInput.addEventListener("input",renderBooks);
+total.textContent="Total: $"+t;
 
-renderBooks();
-updateCart();
+/* FIXED CART COUNT */
+let count = cart.reduce((sum,i)=>sum+i.q,0);
+cartBtn.textContent="Cart ("+count+")";
+}
+
+function remove(i){
+cart.splice(i,1);
+save();
+update();
+}
+
+function save(){
+localStorage.setItem("cart",JSON.stringify(cart));
+}
+
+document.querySelectorAll(".filters button").forEach(b=>{
+b.onclick=()=>{
+document.querySelectorAll(".filters button")
+.forEach(x=>x.classList.remove("active"));
+b.classList.add("active");
+cat=b.getAttribute("data");
+render();
+};
+});
+
+search.oninput=render;
+
+cartBtn.onclick=()=>{
+let box=document.getElementById("cartBox");
+box.style.display=box.style.display==="block"?"none":"block";
+};
+
+function checkout(){
+if(cart.length===0)return alert("Empty cart");
+alert("Order placed 🎉");
+cart=[];
+save();
+update();
+}
+
+document.getElementById("darkToggle").onclick=()=>{
+document.body.classList.toggle("dark");
+localStorage.setItem("theme",document.body.classList.contains("dark"));
+};
+
+if(localStorage.getItem("theme")==="true"){
+document.body.classList.add("dark");
+}
+
+render();
+update();
 </script>
 
 </body>
-  </html>
+                                       </html>
