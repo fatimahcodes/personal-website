@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Fatimah Abubakar | Book Store Project</title> 
+<title>Fatimah Abubakar | Interactive Book Store</title> 
 
 <style>
 :root {
@@ -47,11 +47,12 @@ input {
   width:200px;
   border-radius:5px;
   border:none;
+  margin-top:0.5rem;
 }
 
 .filters button {
   margin:5px;
-  padding:0.5rem;
+  padding:0.5rem 1rem;
   border:none;
   border-radius:5px;
   background:var(--primary);
@@ -61,11 +62,7 @@ input {
 }
 
 .filters button.active { background:#e94e77; }
-
-button:hover {
-  opacity:0.8;
-  transform:scale(1.05);
-}
+.filters button:hover { transform:scale(1.05); }
 
 .grid {
   display:grid;
@@ -79,30 +76,63 @@ button:hover {
   padding:1rem;
   border-radius:10px;
   transition:0.3s;
+  text-align:center;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  position:relative;
 }
 
 .book:hover {
   transform:translateY(-5px);
+  box-shadow:0 8px 20px rgba(0,0,0,0.2);
 }
 
-.book img { width:100%; }
+.book img { 
+  width:100%; 
+  border-radius:8px;
+  transition: transform 0.3s;
+}
+.book img:hover { transform:scale(1.05); }
 
 .book button {
   width:100%;
   margin-top:5px;
   background:var(--primary);
   color:white;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+  transition:0.3s;
 }
+.book button:hover { opacity:0.85; transform:scale(1.05); }
 
-#cartBox {
+.like-btn {
+  position:absolute;
+  top:10px;
+  right:10px;
+  background:transparent;
+  border:none;
+  cursor:pointer;
+  font-size:1.2rem;
+  transition:0.2s;
+}
+.like-btn.liked { color:#e94e77; transform:scale(1.3); }
+
+#cartBox, #checkoutBox {
   position:fixed;
   right:10px;
   top:70px;
+  width:300px;
   background:var(--card);
   padding:1rem;
-  width:250px;
   display:none;
   border-radius:10px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.2);
+  max-height:80vh;
+  overflow-y:auto;
+}
+
+#cartList li {
+  transition: all 0.3s ease;
 }
 
 footer {
@@ -112,21 +142,12 @@ footer {
   text-align:center;
 }
 
-/* MOBILE FIX */
 @media(max-width:600px){
-  input {
-    width:90%;
-    margin-top:10px;
-  }
-
-  header {
-    padding:1rem;
-  }
-
-  #cart, #darkToggle {
-    position:static;
-    margin:5px;
-  }
+  input { width:90%; margin-top:10px; }
+  header { padding:1rem; }
+  #cart, #darkToggle { position:static; margin:5px; }
+  .grid { grid-template-columns:1fr; }
+  #cartBox, #checkoutBox { width:90%; top:70px; }
 }
 </style>
 </head>
@@ -135,7 +156,8 @@ footer {
 
 <header>
 <button id="darkToggle">🌙</button>
-<h2>Fatimah Book Store</h2>
+<h2>Fatimah Interactive Book Store</h2>
+<p>Contact: 08074850779 | Email: abubakarfatimah240@gmail.com</p>
 
 <input id="search" placeholder="Search books...">
 
@@ -151,16 +173,34 @@ footer {
 
 <div class="grid" id="books"></div>
 
+<!-- Cart Box -->
 <div id="cartBox">
 <h3>Your Cart</h3>
 <ul id="list"></ul>
 <p id="total"></p>
-<button onclick="checkout()">Checkout</button>
+<button onclick="showCheckout()">Checkout</button>
+</div>
+
+<!-- Checkout Box -->
+<div id="checkoutBox">
+<h3>Checkout</h3>
+<form id="checkoutForm">
+<label>Name:</label><br>
+<input type="text" id="customerName" required><br>
+<label>Email:</label><br>
+<input type="email" id="customerEmail" required><br>
+<label>Phone:</label><br>
+<input type="tel" id="customerPhone" required><br><br>
+<h4>Order Summary</h4>
+<ul id="checkoutList"></ul>
+<p id="checkoutTotal"></p>
+<button type="submit">Place Order</button>
+<button type="button" onclick="closeCheckout()">Cancel</button>
+</form>
 </div>
 
 <footer>
 <p>© 2026 Fatimah Abubakar</p>
-<p>Contact: abubakarfatimah240@gmail.com</p>
 <p>
 <a href="#">Instagram</a> | 
 <a href="#">WhatsApp</a>
@@ -168,122 +208,171 @@ footer {
 </footer>
 
 <script>
-const data=[
-{t:"Cat Adventures",c:"Storybook",p:10,img:"https://picsum.photos/200/300?1"},
-{t:"Learning HTML",c:"Learning",p:12,img:"https://picsum.photos/200/300?2"},
-{t:"Travel Stories",c:"Travel",p:15,img:"https://picsum.photos/200/300?3"},
-{t:"Mystery Novel",c:"Storybook",p:11,img:"https://picsum.photos/200/300?4"},
-{t:"Science for Kids",c:"Learning",p:9,img:"https://picsum.photos/200/300?5"}
+let data=[];
+let cart=[];
+const booksEl = document.getElementById("books");
+const search = document.getElementById("search");
+const list = document.getElementById("list");
+const total = document.getElementById("total");
+const cartBtn = document.getElementById("cart");
+const checkoutBox = document.getElementById("checkoutBox");
+let category="All";
+
+// Sample book images & descriptions
+const sampleBooks=[
+  {title:"Cat Adventures",img:"https://covers.openlibrary.org/b/id/8221256-L.jpg"},
+  {title:"Learning HTML",img:"https://covers.openlibrary.org/b/id/8319250-L.jpg"},
+  {title:"Travel Stories",img:"https://covers.openlibrary.org/b/id/8091013-L.jpg"},
+  {title:"Mystery Novel",img:"https://covers.openlibrary.org/b/id/8315691-L.jpg"},
+  {title:"Science for Kids",img:"https://covers.openlibrary.org/b/id/8281992-L.jpg"},
+  {title:"Fairy Tales",img:"https://covers.openlibrary.org/b/id/8231853-L.jpg"},
+  {title:"History of Space",img:"https://covers.openlibrary.org/b/id/8369251-L.jpg"},
+  {title:"Math for Beginners",img:"https://covers.openlibrary.org/b/id/8353012-L.jpg"},
+  {title:"World Travel Guide",img:"https://covers.openlibrary.org/b/id/8291012-L.jpg"},
+  {title:"Adventures in Coding",img:"https://covers.openlibrary.org/b/id/8301013-L.jpg"}
 ];
 
-let cart=JSON.parse(localStorage.getItem("cart"))||[];
-let cat="All";
+const dynamicDesc = [
+  "A thrilling story awaits!",
+  "Learn something new today!",
+  "Travel to amazing places!",
+  "An exciting adventure!",
+  "Discover hidden knowledge!",
+  "Perfect for curious minds!",
+  "A fun read for everyone!",
+  "Expand your imagination!",
+  "Explore new horizons!",
+  "Dive into learning!"
+];
 
-const books=document.getElementById("books");
-const search=document.getElementById("search");
-const list=document.getElementById("list");
-const total=document.getElementById("total");
-const cartBtn=document.getElementById("cart");
+const categories=["Storybook","Learning","Travel"];
 
-function render(){
-books.innerHTML="";
-data.filter(b=>
-(cat==="All"||b.c===cat)&&
-b.t.toLowerCase().includes(search.value.toLowerCase())
-).forEach(b=>{
-let d=document.createElement("div");
-d.className="book";
-d.innerHTML=`
-<img src="${b.img}">
-<h4>${b.t}</h4>
-<p>$${b.p}</p>
-<button onclick='add(${JSON.stringify(b)})'>Add to Cart</button>
-`;
-books.appendChild(d);
-});
+// Create 30 books
+for(let i=0;i<30;i++){
+  const book = sampleBooks[i % sampleBooks.length];
+  data.push({
+    id:i,
+    t: book.title,
+    c: categories[Math.floor(Math.random()*categories.length)],
+    img: book.img,
+    p: Math.floor(Math.random()*15)+5,
+    desc: dynamicDesc[i % dynamicDesc.length],
+    likes:0
+  });
 }
 
+// Render books
+function render(){
+  booksEl.innerHTML="";
+  data.filter(b=>(category==="All"||b.c===category)&&b.t.toLowerCase().includes(search.value.toLowerCase()))
+  .forEach(b=>{
+    const d=document.createElement("div");
+    d.className="book";
+    d.innerHTML=`
+      <img src="${b.img}" id="img-${b.id}" alt="${b.t}">
+      <h4>${b.t}</h4>
+      <p id="desc-${b.id}">${b.desc} - $${b.p}</p>
+      <button onclick='changeCover(${b.id})'>Change Book Cover</button>
+      <button onclick='add(${JSON.stringify(b)})'>Add to Cart</button>
+      <button class="like-btn" id="like-${b.id}" onclick="likeBook(${b.id})">❤️ ${b.likes}</button>
+    `;
+    booksEl.appendChild(d);
+  });
+}
+
+// Change book cover dynamically
+function changeCover(id){
+  const newImg = sampleBooks[Math.floor(Math.random()*sampleBooks.length)].img;
+  const newDesc = dynamicDesc[Math.floor(Math.random()*dynamicDesc.length)];
+  const newPrice = Math.floor(Math.random()*15)+5;
+  const book = data.find(b=>b.id===id);
+  book.img=newImg; book.desc=newDesc; book.p=newPrice;
+  document.getElementById(`img-${id}`).src=newImg;
+  document.getElementById(`desc-${id}`).textContent=`${newDesc} - $${newPrice}`;
+}
+
+// Like book
+function likeBook(id){
+  const book = data.find(b=>b.id===id);
+  book.likes++;
+  const btn = document.getElementById(`like-${id}`);
+  btn.textContent=`❤️ ${book.likes}`;
+  btn.classList.add("liked");
+  setTimeout(()=>btn.classList.remove("liked"),300);
+}
+
+// Cart functions
 function add(b){
-let found=cart.find(i=>i.t===b.t);
-if(found){found.q++;}
-else{b.q=1;cart.push(b);}
-
-alert(b.t + " added to cart ✅");
-
-save();
-update();
+  let found = cart.find(i=>i.t===b.t);
+  if(found){found.q++;}
+  else{b.q=1; cart.push(b);}
+  alert(b.t+" added to cart ✅");
+  save(); update();
 }
 
 function update(){
-list.innerHTML="";
-let t=0;
-
-if(cart.length===0){
-  list.innerHTML="<p>No items yet</p>";
+  list.innerHTML="";
+  let t=0;
+  if(cart.length===0){ list.innerHTML="<p>No items yet</p>"; }
+  cart.forEach((i,idx)=>{
+    t+=i.p*i.q;
+    const li = document.createElement("li");
+    li.innerHTML=`${i.t} x${i.q} - $${i.p*i.q} <button onclick="remove(${idx})">x</button>`;
+    list.appendChild(li);
+  });
+  total.textContent="Total: $"+t;
+  let count = cart.reduce((sum,i)=>sum+i.q,0);
+  cartBtn.textContent="Cart ("+count+")";
 }
 
-cart.forEach((i,idx)=>{
-t+=i.p*i.q;
-let li=document.createElement("li");
-li.innerHTML=`${i.t} x${i.q} 
-<button onclick="remove(${idx})">x</button>`;
-list.appendChild(li);
-});
+function remove(i){ cart.splice(i,1); save(); update(); }
 
-total.textContent="Total: $"+t;
-
-/* FIXED CART COUNT */
-let count = cart.reduce((sum,i)=>sum+i.q,0);
-cartBtn.textContent="Cart ("+count+")";
-}
-
-function remove(i){
-cart.splice(i,1);
-save();
-update();
-}
-
-function save(){
-localStorage.setItem("cart",JSON.stringify(cart));
-}
+function save(){ localStorage.setItem("cart",JSON.stringify(cart)); }
 
 document.querySelectorAll(".filters button").forEach(b=>{
-b.onclick=()=>{
-document.querySelectorAll(".filters button")
-.forEach(x=>x.classList.remove("active"));
-b.classList.add("active");
-cat=b.getAttribute("data");
-render();
-};
+  b.onclick=()=>{
+    document.querySelectorAll(".filters button").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    category=b.getAttribute("data");
+    render();
+  };
 });
 
 search.oninput=render;
 
-cartBtn.onclick=()=>{
-let box=document.getElementById("cartBox");
-box.style.display=box.style.display==="block"?"none":"block";
-};
+cartBtn.onclick=()=>{ const box=document.getElementById("cartBox"); box.style.display=box.style.display==="block"?"none":"block"; }
 
-function checkout(){
-if(cart.length===0)return alert("Empty cart");
-alert("Order placed 🎉");
-cart=[];
-save();
-update();
+function showCheckout(){
+  if(cart.length===0) return alert("Cart is empty");
+  document.getElementById("checkoutList").innerHTML="";
+  let t=0;
+  cart.forEach(c=>{
+    t+=c.q*c.p;
+    const li=document.createElement("li");
+    li.textContent=`${c.t} x${c.q} - $${c.p*c.q}`;
+    document.getElementById("checkoutList").appendChild(li);
+  });
+  document.getElementById("checkoutTotal").textContent="Total: $"+t;
+  checkoutBox.style.display="block";
 }
 
+function closeCheckout(){ checkoutBox.style.display="none"; }
+
+document.getElementById("checkoutForm").onsubmit=function(e){
+  e.preventDefault();
+  alert("Order placed successfully 🎉\nThank you, "+document.getElementById("customerName").value+"!");
+  cart=[]; update(); closeCheckout();
+}
+
+// Dark mode toggle
 document.getElementById("darkToggle").onclick=()=>{
-document.body.classList.toggle("dark");
-localStorage.setItem("theme",document.body.classList.contains("dark"));
+  document.body.classList.toggle("dark");
+  localStorage.setItem("theme",document.body.classList.contains("dark"));
 };
+if(localStorage.getItem("theme")==="true"){ document.body.classList.add("dark"); }
 
-if(localStorage.getItem("theme")==="true"){
-document.body.classList.add("dark");
-}
-
-render();
-update();
+render(); update();
 </script>
 
 </body>
-                                       </html>
+  </html>
