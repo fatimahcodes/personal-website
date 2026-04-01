@@ -105,6 +105,10 @@ footer {
   .grid { grid-template-columns:1fr; }
   input { width:90%; }
 }
+  .card img:hover {
+  transform: scale(1.08);
+}
+
 </style>
 </head>
 <body>
@@ -208,6 +212,10 @@ search.oninput = renderDestinations;
 
 // Start
 renderDestinations();
+function bookTrip(index){
+  alert("✅ Booking successful for " + destinations[index].name);
+}
+
 </script>
 
 </body>
