@@ -2,19 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Fatimah Abubakar | Premium Book Store</title>
-
-<!-- Tailored styles -->
+<title>Fatimah Premium Book Store</title>
 <style>
 :root {
   --bg:#f4f4f4;
   --text:#000;
   --card:#fff;
   --primary:#ff9900;
-  --secondary:#f0c14b;
   --accent:#007185;
 }
-
 body {
   margin:0;
   font-family:Arial, sans-serif;
@@ -22,32 +18,26 @@ body {
   color:var(--text);
   transition:0.3s;
 }
-
 .dark {
   --bg:#131921;
   --text:#fff;
   --card:#232f3e;
 }
-
 header {
-  background:var(--primary);
-  color:white;
-  padding:1rem 2rem;
   display:flex;
   justify-content:space-between;
   align-items:center;
   flex-wrap:wrap;
+  background:var(--primary);
+  color:white;
+  padding:1rem 2rem;
 }
-
 header h2 { margin:0; font-size:1.5rem; }
-#darkToggle, #cart { cursor:pointer; padding:0.5rem 1rem; border:none; border-radius:5px; }
-#darkToggle { background:#fff; color:var(--primary);}
-#cart { background:#fff; color:var(--primary);}
-
-input { padding:0.5rem; width:250px; border-radius:5px; border:none; margin-top:0.5rem; }
-.filters button { margin:5px; padding:0.5rem 1rem; border:none; border-radius:5px; background:var(--accent); color:white; cursor:pointer; transition:0.2s;}
-.filters button.active { background:var(--secondary); color:#000; }
-.filters button:hover { transform:scale(1.05); }
+header input { padding:0.5rem; border-radius:5px; border:none; width:200px; margin-right:0.5rem;}
+header button { padding:0.5rem 1rem; border:none; border-radius:5px; cursor:pointer; margin-left:0.5rem; }
+header .filters { margin-top:0.5rem; width:100%; }
+header .filters button { margin:0.2rem; padding:0.5rem 1rem; border:none; border-radius:5px; background:var(--accent); color:white; cursor:pointer; }
+header .filters button.active { background:var(--primary); color:#fff; }
 
 .grid {
   display:grid;
@@ -63,22 +53,17 @@ input { padding:0.5rem; width:250px; border-radius:5px; border:none; margin-top:
   overflow:hidden;
   position:relative;
   transition:0.3s;
-  cursor:pointer;
 }
-
 .book:hover { transform:translateY(-5px) scale(1.02); box-shadow:0 6px 20px rgba(0,0,0,0.2); }
-
 .book img { width:100%; height:250px; object-fit:cover; display:block; }
 .book .price-badge { position:absolute; top:10px; right:10px; background:var(--primary); color:#fff; padding:0.3rem 0.6rem; border-radius:5px; font-weight:bold;}
 .book .stars { position:absolute; top:10px; left:10px; background:rgba(255,255,255,0.8); padding:0.2rem 0.4rem; border-radius:5px; font-size:0.9rem; }
-
 .book-content { padding:0.8rem; }
 .book-content h4 { margin:0 0 0.5rem 0; font-size:1rem; min-height:2.4em; }
 .book-content p { font-size:0.85rem; min-height:2em; margin:0.2rem 0; }
 .book-content button { width:100%; margin-top:0.3rem; background:var(--primary); color:white; border:none; border-radius:5px; padding:0.5rem; cursor:pointer; transition:0.2s; }
 .book-content button:hover { background:var(--accent); }
-
-.like-btn { position:absolute; bottom:10px; right:10px; background:transparent; border:none; font-size:1.2rem; cursor:pointer; transition:0.2s; }
+.like-btn { position:absolute; bottom:10px; right:10px; background:transparent; border:none; font-size:1.2rem; cursor:pointer; }
 .like-btn.liked { color:#e94e77; transform:scale(1.3); }
 
 #cartBox, #checkoutBox {
@@ -87,7 +72,6 @@ input { padding:0.5rem; width:250px; border-radius:5px; border:none; margin-top:
   border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.3);
   max-height:80vh; overflow-y:auto;
 }
-
 #cartList li { transition: all 0.3s ease; }
 
 .recommendations { padding:1rem; background:var(--card); margin:1rem; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1);}
@@ -96,9 +80,8 @@ input { padding:0.5rem; width:250px; border-radius:5px; border:none; margin-top:
 footer { background:#333; color:white; padding:1rem; text-align:center;}
 footer a { color:white; margin:0 0.5rem; text-decoration:none;}
 footer a:hover { text-decoration:underline;}
-
 @media(max-width:600px){
-  input { width:90%; margin-top:10px; }
+  header input { width:90%; margin-top:10px; }
   header { padding:1rem;}
   .grid { grid-template-columns:1fr;}
   #cartBox, #checkoutBox { width:90%; top:70px; }
@@ -109,10 +92,10 @@ footer a:hover { text-decoration:underline;}
 
 <header>
   <button id="darkToggle">🌙</button>
-  <h2>Fatimah Premium Book Store</h2>
+  <h2>Fatimah Book Store</h2>
   <div>
     <input id="search" placeholder="Search books...">
-    <button id="cart">Cart (0)</button>
+    <button id="cartBtn">Cart (0)</button>
   </div>
   <div class="filters">
     <button data="All" class="active">All</button>
@@ -125,75 +108,58 @@ footer a:hover { text-decoration:underline;}
 <div class="grid" id="books"></div>
 
 <div class="recommendations" id="recommendations">
-<h3>Recommended for You:</h3>
-<div id="recGrid" class="grid"></div>
+  <h3>Recommended for You:</h3>
+  <div id="recGrid" class="grid"></div>
 </div>
 
-<!-- Cart Box -->
 <div id="cartBox">
-<h3>Your Cart</h3>
-<ul id="list"></ul>
-<p id="total"></p>
-<button onclick="showCheckout()">Checkout</button>
+  <h3>Your Cart</h3>
+  <ul id="list"></ul>
+  <p id="total"></p>
+  <button onclick="showCheckout()">Checkout</button>
 </div>
 
-<!-- Checkout Box -->
 <div id="checkoutBox">
-<h3>Checkout</h3>
-<form id="checkoutForm">
-<label>Name:</label><br>
-<input type="text" id="customerName" required><br>
-<label>Email:</label><br>
-<input type="email" id="customerEmail" required><br>
-<label>Phone:</label><br>
-<input type="tel" id="customerPhone" required><br><br>
-<h4>Order Summary</h4>
-<ul id="checkoutList"></ul>
-<p id="checkoutTotal"></p>
-<button type="submit">Pay Now 💳</button>
-<button type="button" onclick="closeCheckout()">Cancel</button>
-</form>
+  <h3>Checkout</h3>
+  <form id="checkoutForm">
+    <label>Name:</label><br><input type="text" id="customerName" required><br>
+    <label>Email:</label><br><input type="email" id="customerEmail" required><br>
+    <label>Phone:</label><br><input type="tel" id="customerPhone" required><br><br>
+    <h4>Order Summary</h4>
+    <ul id="checkoutList"></ul>
+    <p id="checkoutTotal"></p>
+    <button type="submit">Pay Now 💳</button>
+    <button type="button" onclick="closeCheckout()">Cancel</button>
+  </form>
 </div>
 
 <footer>
-<p>© 2026 Fatimah Abubakar</p>
-<p><a href="#">Instagram</a> | <a href="#">WhatsApp</a></p>
+  <p>© 2026 Fatimah Abubakar</p>
+  <p><a href="#">Instagram</a> | <a href="#">WhatsApp</a></p>
 </footer>
 
-<script src="https://js.paystack.co/v1/inline.js"></script>
 <script>
 // -------------------- DATA --------------------
 let data=[], cart=[];
 const booksEl = document.getElementById("books");
 const search = document.getElementById("search");
 const list = document.getElementById("list");
-const total = document.getElementById("total");
-const cartBtn = document.getElementById("cart");
-const checkoutBox = document.getElementById("checkoutBox");
-let category="All";
+const totalEl = document.getElementById("total");
+const cartBtn = document.getElementById("cartBtn");
+let category = "All";
 
-// All your listed book images
+// Sample books
 const sampleBooks=[
   {title:"The Alchemist",img:"images/the alchemist.jpg"},
   {title:"1984",img:"images/1984.jpg"},
   {title:"Atomic Habits",img:"images/atomic habits.jpg"},
-  {title:"To Kill a Mockingbird",img:"images/to kill a mockingbird.jpg"},
   {title:"Harry Potter",img:"images/harry potter.jpg"},
   {title:"The Lord of the Rings",img:"images/the lord of the rings.jpg"},
-  {title:"The Great Gatsby",img:"images/the great gatsby.jpg"},
-  {title:"Thinking Fast and Slow",img:"images/thinking fast and slow.jpg"},
-  {title:"The Hobbit",img:"images/the hobbit.jpg"},
-  {title:"Brave New World",img:"images/brave new world.jpg"},
-  {title:"Brand New World",img:"images/brand new world.jpg"},
-  {title:"The Catcher in the Rye",img:"images/the catcher in the rye.jpg"},
+  {title:"Little Women",img:"images/little women.jpg"},
   {title:"Sapiens",img:"images/sapiens.jpg"},
   {title:"The Chronicles of Narnia",img:"images/the chronicles of narnia.jpg"},
-  {title:"Little Women",img:"images/little women.jpg"},
   {title:"Moby Dick",img:"images/moby dick.jpg"},
-  {title:"War and Peace",img:"images/war and peace.jpg"},
-  {title:"The DaVinci Code",img:"images/the davinci code.jpg"},
-  {title:"Jane Eyre",img:"images/jane eyre.jpg"},
-  {title:"The Power of Habit",img:"images/the power of habit.jpg"}
+  {title:"The Hobbit",img:"images/the hobbit.jpg"},
 ];
 
 const dynamicDesc = [
@@ -210,8 +176,8 @@ const dynamicDesc = [
 ];
 
 const categories=["Storybook","Learning","Travel"];
-for(let i=0;i<20;i++){
-  const book = sampleBooks[i % sampleBooks.length];
+for(let i=0;i<sampleBooks.length;i++){
+  const book = sampleBooks[i];
   data.push({
     id:i,
     t: book.title,
@@ -224,22 +190,48 @@ for(let i=0;i<20;i++){
   });
 }
 
-// -------------------- RENDER --------------------
+// -------------------- FUNCTIONS --------------------
+function render() {
+  booksEl.innerHTML="";
+  const searchValue = search.value.toLowerCase();
+  data.filter(b => (category==="All"||b.c===category) && b.t.toLowerCase().includes(searchValue))
+      .forEach(b=>{
+        let stars="";
+        for(let s=0;s<b.rating;s++) stars+="⭐";
+        const d = document.createElement("div");
+        d.className="book";
+        d.innerHTML=`
+          <img src="${b.img}" alt="${b.t}">
+          <span class="price-badge">$${b.p}</span>
+          <span class="stars">${stars}</span>
+          <div class="book-content">
+            <h4>${b.t}</h4>
+            <p>${b.desc}</p>
+            <button class="add-btn" data-id="${b.id}">Add to Cart</button>
+            <button class="like-btn" id="like-${b.id}">❤️ ${b.likes}</button>
+          </div>`;
+        booksEl.appendChild(d);
+      });
+
+  document.querySelectorAll(".add-btn").forEach(btn=>{
+    btn.onclick = ()=>{const id=parseInt(btn.getAttribute("data-id")); add(data.find(b=>b.id===id));};
+  });
+  document.querySelectorAll(".like-btn").forEach(btn=>{
+    const id=parseInt(btn.id.split("-")[1]);
+    btn.onclick = ()=>likeBook(id);
+  });
+  renderRecommendations();
+}
+
 function renderRecommendations(){
   const recGrid = document.getElementById("recGrid");
-  recGrid.innerHTML = "";
-
-  // simple AI: top liked + random from cart category
-  let recommended = data.sort((a,b) => b.likes - a.likes).slice(0,4);
-
+  recGrid.innerHTML="";
+  let recommended = data.sort((a,b)=>b.likes-a.likes).slice(0,4);
   recommended.forEach(b=>{
+    let stars=""; for(let s=0;s<b.rating;s++) stars+="⭐";
     const d = document.createElement("div");
-    d.className = "book";
-
-    let stars = "";
-    for(let s=0; s<b.rating; s++) stars += "⭐";
-
-    d.innerHTML = `
+    d.className="book";
+    d.innerHTML=`
       <img src="${b.img}" alt="${b.t}">
       <span class="price-badge">$${b.p}</span>
       <span class="stars">${stars}</span>
@@ -248,43 +240,70 @@ function renderRecommendations(){
         <p>${b.desc}</p>
         <button class="add-btn" data-id="${b.id}">Add to Cart</button>
         <button class="like-btn" id="like-${b.id}">❤️ ${b.likes}</button>
-      </div>
-    `;
-
+      </div>`;
     recGrid.appendChild(d);
   });
+  document.querySelectorAll("#recGrid .add-btn").forEach(btn=>{btn.onclick=()=>{const id=parseInt(btn.getAttribute("data-id")); add(data.find(b=>b.id===id));};});
+  document.querySelectorAll("#recGrid .like-btn").forEach(btn=>{const id=parseInt(btn.id.split("-")[1]); btn.onclick=()=>likeBook(id);});
+}
 
-  // Add event listeners for Add to Cart buttons
-  document.querySelectorAll("#recGrid .add-btn").forEach(btn=>{
-    btn.onclick = () => {
-      const id = parseInt(btn.getAttribute("data-id"));
-      const book = data.find(b => b.id === id);
-      add(book);
-    }
-  });
-
-  // Add event listeners for like buttons
-  document.querySelectorAll("#recGrid .like-btn").forEach(btn=>{
-    const id = parseInt(btn.id.split("-")[1]);
-    btn.onclick = () => likeBook(id);
-  });
-  } 
-
-// -------------------- LIKES --------------------
 function likeBook(id){
   const book = data.find(b=>b.id===id);
   book.likes++;
-  const btn = document.getElementById(`like-${id}`);
-  btn.textContent=`❤️ ${book.likes}`;
-  btn.classList.add("liked");
-  setTimeout(()=>btn.classList.remove("liked"),300);
+  document.getElementById(`like-${id}`).textContent=`❤️ ${book.likes}`;
   renderRecommendations();
 }
 
-// CART & PAYSTACK same as before...
+function add(book){
+  cart.push(book);
+  localStorage.setItem("cart",JSON.stringify(cart));
+  renderCart();
+}
 
-// INITIAL RENDER
-render(); 
+function renderCart(){
+  list.innerHTML=""; let sum=0;
+  cart.forEach((item,index)=>{
+    sum+=item.p;
+    const li=document.createElement("li");
+    li.innerHTML=`${item.t} - $${item.p} <button onclick="removeCart(${index})">x</button>`;
+    list.appendChild(li);
+  });
+  totalEl.textContent=`Total: $${sum}`;
+  cartBtn.textContent=`Cart (${cart.length})`;
+}
+
+function removeCart(index){
+  cart.splice(index,1);
+  localStorage.setItem("cart",JSON.stringify(cart));
+  renderCart();
+}
+
+function showCheckout(){
+  document.getElementById("checkoutBox").style.display="block";
+  document.getElementById("checkoutList").innerHTML="";
+  cart.forEach(b=>{
+    const li=document.createElement("li"); li.textContent=`${b.t} - $${b.p}`;
+    document.getElementById("checkoutList").appendChild(li);
+  });
+  document.getElementById("checkoutTotal").textContent=totalEl.textContent;
+}
+function closeCheckout(){document.getElementById("checkoutBox").style.display="none";}
+
+document.getElementById("darkToggle").onclick=()=>document.body.classList.toggle("dark");
+
+document.querySelectorAll(".filters button").forEach(btn=>{
+  btn.onclick=()=>{
+    category=btn.getAttribute("data");
+    document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    render();
+  }
+});
+
+search.oninput = ()=>render();
+cart = JSON.parse(localStorage.getItem("cart"))||[];
+renderCart();
+render();
 </script>
 </body>
   </html>
