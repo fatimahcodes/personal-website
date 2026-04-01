@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Fatimah Premium Store</title>
+<title>Fatimah Premium Store | Products & Services</title>
 <style>
 :root {
   --primary:#232f3e;
@@ -18,11 +18,12 @@
   --text:#fff;
   --shadow: rgba(0,0,0,0.5);
 }
-body { margin:0; font-family:Arial; background:var(--bg); color:var(--text); transition:0.3s; }
+
+body { margin:0; font-family:Arial,sans-serif; background:var(--bg); color:var(--text); transition:0.3s; }
 
 /* HEADER */
 header {
-  background: var(--primary); color:white; display:flex; justify-content:space-between; align-items:center; padding:1rem; flex-wrap:wrap;
+  background: var(--primary); color:white; padding:1rem 2rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;
 }
 header h1 { margin:0; font-size:1.5rem; }
 header .btn { background: var(--accent); border:none; padding:8px 12px; cursor:pointer; margin-left:5px; border-radius:5px; }
@@ -32,19 +33,21 @@ header .btn { background: var(--accent); border:none; padding:8px 12px; cursor:p
 #searchInput { padding:10px; width:80%; max-width:400px; border-radius:5px; border:1px solid #ccc; }
 
 /* GRID */
-.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; padding:15px; }
+.section { padding:10px 20px; }
+.section h2 { text-align:center; margin-bottom:15px; }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; }
 
 /* CARD */
 .card { background: var(--card); border-radius:10px; overflow:hidden; position:relative; box-shadow:0 4px 15px var(--shadow); transition:0.3s; }
 .card:hover { transform: translateY(-5px) scale(1.02); box-shadow:0 8px 20px var(--shadow);}
-.card img { width:100%; display:block; transition:0.3s; }
+.card img { width:100%; height:220px; object-fit:cover; display:block; transition:0.3s; }
 .card img:hover { transform: scale(1.05);}
-.card-content { padding:10px;}
+.card-content { padding:10px; text-align:center;}
 .card h3 { margin:5px 0; font-size:1.1rem;}
-.card p { margin:5px 0; font-size:0.9rem;}
+.card p { margin:5px 0; font-size:0.85rem;}
 .price-badge { position:absolute; top:10px; right:10px; background:var(--accent); color:#000; padding:5px 8px; border-radius:5px; font-weight:bold; }
 .stars { position:absolute; bottom:10px; left:10px; background:rgba(255,255,255,0.9); padding:3px 6px; border-radius:5px; font-size:0.9rem; }
-.card button { width:100%; margin-top:5px; padding:8px; background:var(--primary); color:white; border:none; border-radius:5px; cursor:pointer; transition:0.2s; }
+.card button { width:90%; margin-top:5px; padding:8px; background:var(--primary); color:white; border:none; border-radius:5px; cursor:pointer; transition:0.2s; }
 .card button:hover { opacity:0.85; }
 
 /* CART */
@@ -56,10 +59,6 @@ header .btn { background: var(--accent); border:none; padding:8px 12px; cursor:p
 /* CHECKOUT */
 #checkout { display:none; padding:20px; background:var(--card); max-width:400px; margin:20px auto; border-radius:10px; box-shadow:0 4px 15px var(--shadow); }
 
-/* CATEGORY BANNERS */
-.category-header { text-align:center; margin-top:30px; }
-.category-header img { width:80px; height:80px; object-fit:cover; border-radius:50%; margin-bottom:10px; }
-
 /* FOOTER */
 footer { background:#333; color:white; text-align:center; padding:10px; margin-top:20px; }
 
@@ -68,6 +67,8 @@ footer { background:#333; color:white; text-align:center; padding:10px; margin-t
   #searchInput { width:90%; }
   header { flex-direction:column; text-align:center; }
   header .btn { margin:5px 0; }
+  .grid { grid-template-columns:1fr; }
+  #cart { width:90%; top:60px; }
 }
 </style>
 </head>
@@ -82,32 +83,28 @@ footer { background:#333; color:white; text-align:center; padding:10px; margin-t
 </header>
 
 <div id="searchBar">
-  <input type="text" id="searchInput" placeholder="Search all items..." oninput="renderAll()">
+  <input type="text" id="searchInput" placeholder="Search items..." oninput="renderAll()">
 </div>
 
-<div class="category-header">
-  <img src="images/books-icon.png" alt="Books">
+<div class="section" id="booksSection">
   <h2>📚 Books</h2>
+  <div class="grid" id="bookGrid"></div>
 </div>
-<div class="grid" id="bookGrid"></div>
 
-<div class="category-header">
-  <img src="images/travel-icon.png" alt="Travel">
-  <h2>✈️ Travel</h2>
-</div>
-<div class="grid" id="travelGrid"></div>
-
-<div class="category-header">
-  <img src="images/storybooks-icon.png" alt="Storybooks">
+<div class="section" id="storySection">
   <h2>📖 Storybooks</h2>
+  <div class="grid" id="storyGrid"></div>
 </div>
-<div class="grid" id="storyGrid"></div>
 
-<div class="category-header">
-  <img src="images/recommend-icon.png" alt="Recommended">
-  <h2>⭐ Recommended For You</h2>
+<div class="section" id="travelSection">
+  <h2>✈️ Travel Trips</h2>
+  <div class="grid" id="travelGrid"></div>
 </div>
-<div class="grid" id="recGrid"></div>
+
+<div class="section" id="recommendSection">
+  <h2>⭐ Recommended For You</h2>
+  <div class="grid" id="recGrid"></div>
+</div>
 
 <!-- CART -->
 <div id="cart">
@@ -121,8 +118,8 @@ footer { background:#333; color:white; text-align:center; padding:10px; margin-t
 <div id="checkout">
   <h2>💳 Checkout</h2>
   <p>Total: $<span id="checkoutTotal"></span></p>
-  <input type="text" id="customerName" placeholder="Name" required><br><br>
-  <input type="email" id="customerEmail" placeholder="Email" required><br><br>
+  <input type="text" id="customerName" placeholder="Name"><br><br>
+  <input type="email" id="customerEmail" placeholder="Email"><br><br>
   <button onclick="pay()">Pay Now 💳</button>
   <button onclick="closeCheckout()">Cancel</button>
 </div>
@@ -133,17 +130,11 @@ footer { background:#333; color:white; text-align:center; padding:10px; margin-t
 
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <script>
-// --------- DATA ---------
+// ---------------- DATA ----------------
 let booksData = [
   {title:"The Alchemist",price:15,rating:5,img:"images/the-alchemist.jpg",likes:100},
   {title:"1984",price:12,rating:4,img:"images/1984.jpg",likes:90},
   {title:"Atomic Habits",price:20,rating:5,img:"images/atomic-habits.jpg",likes:80}
-];
-
-let travelData = [
-  {title:"Paris",price:1200,rating:5,img:"images/paris.jpg",likes:50},
-  {title:"Bali",price:900,rating:4,img:"images/bali.jpg",likes:60},
-  {title:"Tokyo",price:1300,rating:5,img:"images/tokyo.jpg",likes:40}
 ];
 
 let storyData = [
@@ -152,18 +143,24 @@ let storyData = [
   {title:"The Lord of the Rings",price:30,rating:5,img:"images/the-lord-of-the-rings.jpg",likes:110}
 ];
 
+let travelData = [
+  {title:"Paris Trip",price:1200,rating:5,img:"images/paris.jpg",likes:50},
+  {title:"Bali Trip",price:900,rating:4,img:"images/bali.jpg",likes:60},
+  {title:"Tokyo Trip",price:1300,rating:5,img:"images/tokyo.jpg",likes:40}
+];
+
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-// --------- FUNCTIONS ---------
+// ---------------- FUNCTIONS ----------------
 function renderAll(){
   const search = document.getElementById("searchInput").value.toLowerCase();
-  renderSection(booksData,"bookGrid",search);
-  renderSection(travelData,"travelGrid",search);
-  renderSection(storyData,"storyGrid",search);
+  renderSection(booksData,"bookGrid",search,"Add to Cart");
+  renderSection(storyData,"storyGrid",search,"Add to Cart");
+  renderSection(travelData,"travelGrid",search,"Book Trip");
   renderRecommendations();
 }
 
-function renderSection(dataArray, gridId, search){
+function renderSection(dataArray,gridId,search,btnText){
   const grid = document.getElementById(gridId);
   grid.innerHTML="";
   dataArray.filter(item => item.title.toLowerCase().includes(search))
@@ -177,7 +174,7 @@ function renderSection(dataArray, gridId, search){
       <span class="stars">${stars}</span>
       <div class="card-content">
         <h3>${item.title}</h3>
-        <button onclick='addToCart("${item.title}",${item.price})'>Add to Cart</button>
+        <button onclick='addToCart("${item.title}",${item.price})'>${btnText}</button>
       </div>
     `;
     grid.appendChild(card);
@@ -187,7 +184,7 @@ function renderSection(dataArray, gridId, search){
 function renderRecommendations(){
   const recGrid = document.getElementById("recGrid");
   recGrid.innerHTML="";
-  let allItems = [...booksData,...travelData,...storyData];
+  let allItems = [...booksData,...storyData,...travelData];
   let recommended = allItems.sort((a,b)=>b.likes-a.likes).slice(0,4);
   recommended.forEach(item=>{
     let stars=""; for(let i=0;i<item.rating;i++) stars+="⭐";
@@ -251,6 +248,7 @@ function toggleTheme(){ document.body.classList.toggle("dark"); }
 function pay(){
   let email = prompt("Enter your email for payment:");
   let amount = parseInt(document.getElementById("checkoutTotal").textContent)*100;
+  if(!amount) return alert("Cart is empty!");
   var handler = PaystackPop.setup({
     key: 'YOUR_PUBLIC_KEY',
     email: email,
@@ -264,9 +262,8 @@ function pay(){
   });
 }
 
-// --------- INITIAL RENDER ---------
+// ---------------- INIT ----------------
 renderAll(); renderCart();
 </script>
-
 </body>
   </html>
