@@ -94,6 +94,8 @@ input {
 }
 .card button:hover { opacity:0.85; transform:scale(1.05); }
 
+#themeToggle { margin-left:1rem; }
+
 footer {
   background:#333;
   color:white;
@@ -105,10 +107,22 @@ footer {
   .grid { grid-template-columns:1fr; }
   input { width:90%; }
 }
-  .card img:hover {
-  transform: scale(1.08);
+
+/* ❤️ Like pop animations */
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.5); }
+  100% { transform: scale(1); }
 }
 
+.like-pop {
+  animation: pop 0.3s ease;
+}
+
+.heart-pop {
+  display: inline-block;
+  animation: pop 0.3s ease;
+}
 </style>
 </head>
 <body>
@@ -123,10 +137,19 @@ footer {
     <button data="City">Cities</button>
     <button data="Mountain">Mountains</button>
     <button data="Historical">Historical</button>
+    <button id="themeToggle">🌙 Dark Mode</button>
   </div>
 </header>
 
+<!-- Top Destinations Section -->
+<section id="topDestinations" style="padding:1rem;">
+  <h2 style="text-align:center;">🏆 Top Destinations</h2>
+  <div class="grid" id="topGrid"></div>
+</section>
+
+<!-- Main Destination Grid -->
 <section class="grid" id="destinationGrid"></section>
+
 <!-- Booking Modal -->
 <div id="bookingModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); justify-content:center; align-items:center; z-index:1000;">
   <div style="background:#fff; padding:2rem; border-radius:10px; max-width:400px; width:90%; position:relative;">
@@ -141,13 +164,13 @@ footer {
     </form>
   </div>
 </div>
-  
+
 <footer>
 <p>© 2026 Fatimah Abubakar</p>
 <p>Contact: abubakarfatimah240@gmail.com | 08074850779</p>
 </footer>
 
-  <script>
+<script>
 // Destination data
 const destinations = [
   { name:"Paris, France", desc:"City of lights and love", type:"City", price:1200, likes:0, images:["images/paris.jpg","images/paris (1).jpg"], current:0 },
@@ -162,65 +185,77 @@ const destinations = [
   { name:"Istanbul, Turkey", desc:"Where East meets West", type:"Historical", price:1150, likes:0, images:["images/istanbul.jpg","images/istanbul(1).jpg"], current:0 }
 ];
 
+// Elements
 const grid = document.getElementById("destinationGrid");
 const search = document.getElementById("search");
+const themeToggle = document.getElementById("themeToggle");
 let category = "All";
+let darkMode = false;
 
-// Render destinations
+// Render main destinations
 function renderDestinations() {
   grid.innerHTML = "";
-
   destinations
     .filter(d => (category==="All" || d.type===category) &&
                  d.name.toLowerCase().includes(search.value.toLowerCase()))
     .forEach((d,i) => {
       const card = document.createElement("div");
       card.className = "card";
-
       card.innerHTML = `
         <img src="${d.images[d.current]}" alt="${d.name}" id="img-${i}" onclick="changeImage(${i})">
         <h3>${d.name}</h3>
         <p>${d.desc}</p>
         <p>Price: $${d.price}</p>
-        <button onclick="likeDestination(${i})">❤️ Like (<span id="likes-${i}">${d.likes}</span>)</button>
+        <button onclick="likeDestination(${i})">
+          <span class="heart-pop">❤️ </span>
+          Like (<span id="likes-${i}">${d.likes}</span>)
+        </button>
         <button onclick="openBookingForm(${i})">✈️ Book Trip</button>
       `;
-
       grid.appendChild(card);
     });
 }
 
-// Image changer
+// Change images
 function changeImage(index){
   let destination = destinations[index];
   destination.current = (destination.current + 1) % destination.images.length;
   document.getElementById(`img-${index}`).src = destination.images[destination.current];
 }
 
-// Like functionality
+// Like with pop animation
 function likeDestination(index){
   destinations[index].likes++;
-  document.getElementById(`likes-${index}`).textContent = destinations[index].likes;
+  const likeSpan = document.getElementById(`likes-${index}`);
+  const heartSpan = likeSpan.previousElementSibling; // the ❤️ span
+  likeSpan.textContent = destinations[index].likes;
+
+  likeSpan.classList.add("like-pop");
+  heartSpan.classList.add("like-pop");
+
+  setTimeout(()=>{
+    likeSpan.classList.remove("like-pop");
+    heartSpan.classList.remove("like-pop");
+  },300);
+
+  renderTopDestinations();
 }
 
-// Booking modal elements
+// Booking modal
 const bookingModal = document.getElementById("bookingModal");
 const tripName = document.getElementById("tripName");
 const closeModal = document.getElementById("closeModal");
 const bookingForm = document.getElementById("bookingForm");
 
-// Open booking modal
-function openBookingForm(index) {
+function openBookingForm(index){
   tripName.textContent = destinations[index].name;
   bookingModal.style.display = "flex";
-  bookingModal.dataset.index = index; // store index for later
+  bookingModal.dataset.index = index;
 }
 
-// Close modal
 closeModal.onclick = () => bookingModal.style.display = "none";
-window.onclick = (e) => { if(e.target === bookingModal) bookingModal.style.display = "none"; }
+window.onclick = e => { if(e.target === bookingModal) bookingModal.style.display = "none"; }
 
-// Handle booking form submission
 bookingForm.onsubmit = function(e){
   e.preventDefault();
   const index = bookingModal.dataset.index;
@@ -229,10 +264,9 @@ bookingForm.onsubmit = function(e){
   const date = document.getElementById("date").value;
 
   alert(`✅ Trip booked!\nDestination: ${destinations[index].name}\nName: ${name}\nEmail: ${email}\nDate: ${date}`);
-
   bookingForm.reset();
   bookingModal.style.display = "none";
-};
+}
 
 // Filters
 document.querySelectorAll(".filters button").forEach(b => {
@@ -247,9 +281,54 @@ document.querySelectorAll(".filters button").forEach(b => {
 // Search
 search.oninput = renderDestinations;
 
+// Dark/Light mode
+themeToggle.onclick = () => {
+  darkMode = !darkMode;
+  if(darkMode){
+    document.documentElement.style.setProperty('--bg','#121212');
+    document.documentElement.style.setProperty('--text','#fff');
+    document.documentElement.style.setProperty('--card','#1e1e1e');
+    document.documentElement.style.setProperty('--primary','#bb86fc');
+    themeToggle.textContent = "☀️ Light Mode";
+  } else {
+    document.documentElement.style.setProperty('--bg','#f4f4f4');
+    document.documentElement.style.setProperty('--text','#000');
+    document.documentElement.style.setProperty('--card','#fff');
+    document.documentElement.style.setProperty('--primary','#4caf50');
+    themeToggle.textContent = "🌙 Dark Mode";
+  }
+};
+
+// Top Destinations
+function renderTopDestinations(){
+  const topGrid = document.getElementById("topGrid");
+  topGrid.innerHTML = "";
+  const top = [...destinations].sort((a,b)=>b.likes-a.likes).slice(0,3);
+  top.forEach((d,i)=>{
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${d.images[d.current]}" alt="${d.name}" onclick="changeImageTop(${i})">
+      <h3>${d.name}</h3>
+      <p>${d.desc}</p>
+      <p>Likes: ${d.likes}</p>
+      <p>Price: $${d.price}</p>
+      <button onclick="openBookingForm(${destinations.indexOf(d)})">✈️ Book Trip</button>
+    `;
+    topGrid.appendChild(card);
+  });
+}
+
+function changeImageTop(index){
+  const top = [...destinations].sort((a,b)=>b.likes-a.likes).slice(0,3);
+  const destIndex = destinations.indexOf(top[index]);
+  changeImage(destIndex);
+}
+
 // Initial render
 renderDestinations();
+renderTopDestinations();
 </script>
 
 </body>
-  </html>
+      </html>
