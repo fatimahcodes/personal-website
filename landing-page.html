@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Fatimah Abubakar | Landing Page</title>
+<title>Fatimah Abubakar | Explore Cats, Travel & Books</title>
 <style>
 :root {
   --primary: #4a90e2;
@@ -30,20 +30,11 @@ header {
   padding: 3rem 1rem;
   text-align: center;
   position: relative;
-  overflow: hidden;
 }
-
 header h1 { font-size:2.5rem; margin-bottom:1rem; }
-header p { font-size:1.2rem; margin-bottom:2rem; }
-header img {
-  max-width: 100%;
-  border-radius: 10px;
-  margin-top: 1rem;
-  transition: transform 0.5s ease;
-}
-header img:hover { transform: scale(1.05); }
-
-button {
+header p { font-size:1.2rem; margin-bottom:1.5rem; }
+header button {
+  margin: 0.3rem;
   padding: 12px 25px;
   font-size: 1rem;
   background: var(--primary);
@@ -53,27 +44,24 @@ button {
   cursor: pointer;
   transition: transform 0.3s, background 0.3s;
 }
-button:hover {
-  background: var(--button-hover);
-  transform: scale(1.05);
-}
+header button:hover { background: var(--button-hover); transform: scale(1.05); }
 
 /* SECTIONS */
 section {
-  padding: 4rem 1rem;
+  padding: 3rem 1rem;
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.8s ease, transform 0.8s ease;
 }
 section.visible { opacity:1; transform:translateY(0); }
 
-section h2 { font-size:2rem; margin-bottom:1rem; }
-section p { font-size:1.1rem; margin-bottom:2rem; }
+section h2 { font-size:2rem; margin-bottom:1rem; text-align:center; }
+section p { font-size:1.1rem; margin-bottom:2rem; text-align:center; }
 
-/* MINI PRODUCT GRID */
+/* GRID / CARD */
 .grid {
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:1rem;
   padding:1rem;
 }
@@ -86,12 +74,15 @@ section p { font-size:1.1rem; margin-bottom:2rem; }
   transition: transform 0.3s, box-shadow 0.3s;
 }
 .card:hover { transform:translateY(-7px); box-shadow:0 8px 20px rgba(0,0,0,0.2); }
+
 .card img {
   width:100%;
   border-radius:10px;
   transition: transform 0.3s;
+  cursor:pointer;
 }
 .card img:hover { transform: scale(1.07); }
+
 .card button {
   margin:0.3rem;
   padding:0.5rem 1rem;
@@ -103,6 +94,22 @@ section p { font-size:1.1rem; margin-bottom:2rem; }
   transition:0.3s;
 }
 .card button:hover { opacity:0.85; transform: scale(1.05); }
+
+/* ❤️ LIKE ANIMATION */
+.like {
+  display:inline-block;
+  cursor:pointer;
+  transition: transform 0.3s;
+}
+.like.pulse { transform: scale(1.4); }
+
+/* TRENDING TITLE */
+.trending-title {
+  text-align:center;
+  margin:1rem 0;
+  font-size:1.4rem;
+  color:var(--primary);
+}
 
 /* FOOTER */
 footer {
@@ -126,35 +133,41 @@ footer a:hover { text-decoration:underline; }
 <body>
 
 <header>
-  <h1>Welcome to My Landing Page</h1>
-  <p>A portfolio-ready interactive landing page with mini product preview.</p>
-  <img src="landing-page.jpg" alt="Landing Page Preview">
-  <br><br>
-  <button onclick="scrollToSection('products')">Get Started</button>
+  <h1>Explore Cats, Travel & Books</h1>
+  <p>See the trending items first and interact with all categories!</p>
+  <button onclick="scrollToSection('cats')">Shop Cats</button>
+  <button onclick="scrollToSection('travel')">Explore Travel</button>
+  <button onclick="scrollToSection('books')">Discover Books</button>
+  <button id="themeToggle">🌙 Dark Mode</button>
 </header>
 
-<section id="about">
-  <h2>About This Page</h2>
-  <p>This landing page demonstrates a modern layout, animations, and interactive product cards directly on your page.</p>
+<!-- CATS SECTION -->
+<section id="cats">
+  <h2>Adorable Cats</h2>
+  <p class="trending-title">🔥 Trending Cats</p>
+  <div class="grid" id="topCatGrid"></div>
+  <div class="grid" id="catGrid"></div>
 </section>
 
-<section id="products">
-  <h2>Mini Cat Shop Preview</h2>
-  <div class="grid" id="productGrid"></div>
+<!-- TRAVEL SECTION -->
+<section id="travel">
+  <h2>Travel Destinations</h2>
+  <p class="trending-title">🌍 Trending Trips</p>
+  <div class="grid" id="topTravelGrid"></div>
+  <div class="grid" id="travelGrid"></div>
 </section>
 
-<section id="contact">
-  <h2>Contact Me</h2>
-  <p>Email: <a href="mailto:abubakarfatimah240@gmail.com">abubakarfatimah240@gmail.com</a><br>
-     Phone: 08074850779</p>
-  <p>
-    <a href="#">Instagram</a> | 
-    <a href="#">WhatsApp</a>
-  </p>
+<!-- BOOKS SECTION -->
+<section id="books">
+  <h2>Recommended Books</h2>
+  <p class="trending-title">📚 Trending Books</p>
+  <div class="grid" id="topBookGrid"></div>
+  <div class="grid" id="bookGrid"></div>
 </section>
 
 <footer>
-  <p>© 2026 Fatimah Abubakar | Designed with ❤️ by Fatimah</p>
+  <p>© 2026 Fatimah Abubakar | Designed with ❤️</p>
+  <p>Email: <a href="mailto:abubakarfatimah240@gmail.com">abubakarfatimah240@gmail.com</a> | Phone: 08074850779</p>
 </footer>
 
 <script>
@@ -163,69 +176,205 @@ function scrollToSection(id){
   document.getElementById(id).scrollIntoView({behavior:'smooth'});
 }
 
-// Section animations
+// Section reveal on scroll
 const sections = document.querySelectorAll('section');
 window.addEventListener('scroll', checkSections);
 function checkSections(){
-  const triggerBottom = window.innerHeight*0.85;
-  sections.forEach(section=>{
-    const top = section.getBoundingClientRect().top;
-    if(top<triggerBottom) section.classList.add('visible');
+  const triggerBottom = window.innerHeight * 0.85;
+  sections.forEach(sec => {
+    const top = sec.getBoundingClientRect().top;
+    if(top < triggerBottom) sec.classList.add('visible');
   });
 }
 checkSections();
 
-// MINI PRODUCT DATA
-let products = [];
+// Dark/Light mode toggle
+const themeToggle = document.getElementById('themeToggle');
+let darkMode = false;
+themeToggle.onclick = () => {
+  darkMode = !darkMode;
+  if(darkMode){
+    document.documentElement.style.setProperty('--bg','#121212');
+    document.documentElement.style.setProperty('--text','#fff');
+    document.documentElement.style.setProperty('--card','#1e1e1e');
+    document.documentElement.style.setProperty('--primary','#bb86fc');
+    themeToggle.textContent = "☀️ Light Mode";
+  } else {
+    document.documentElement.style.setProperty('--bg','#f4f4f4');
+    document.documentElement.style.setProperty('--text','#000');
+    document.documentElement.style.setProperty('--card','#fff');
+    document.documentElement.style.setProperty('--primary','#4a90e2');
+    themeToggle.textContent = "🌙 Dark Mode";
+  }
+};
+
+// ---------------------- CATS ----------------------
+let cats = [];
 async function fetchCats(){
   try{
-    const res = await fetch("https://api.thecatapi.com/v1/images/search?limit=10");
+    const res = await fetch("https://api.thecatapi.com/v1/images/search?limit=8");
     const data = await res.json();
-    products = data.map((c,i)=>({
-      id:i,
-      img:c.url,
-      desc:`Adorable cat ${i+1}`,
-      price:(Math.floor(Math.random()*15)+5),
-      likes:0
+    cats = data.map((c,i)=>({
+      id:i, img:c.url, desc:`Adorable Cat ${i+1}`, price:(Math.floor(Math.random()*15)+5), likes:Math.floor(Math.random()*10)
     }));
-    renderProducts();
-  }catch(e){console.error(e);}
+    renderCats();
+    renderTopCats();
+  }catch(e){ console.error(e); }
 }
-
-function renderProducts(){
-  const grid = document.getElementById("productGrid");
+function renderCats(){
+  const grid = document.getElementById('catGrid');
   grid.innerHTML="";
-  products.forEach(p=>{
-    const card = document.createElement("div");
+  cats.forEach(c=>{
+    const card = document.createElement('div');
     card.className="card";
     card.innerHTML=`
-      <img src="${p.img}" id="img-${p.id}">
-      <p id="desc-${p.id}">${p.desc} - $${p.price}</p>
-      <button onclick="changeProduct(${p.id})">Change Image</button>
-      <button onclick="likeProduct(${p.id})">❤️ Like (<span id="likes-${p.id}">${p.likes}</span>)</button>
+      <img src="${c.img}" id="catImg-${c.id}" onclick="changeCat(${c.id})">
+      <p>${c.desc} - $${c.price}</p>
+      <span class="like" id="catLike-${c.id}" onclick="likeCat(${c.id})">❤️ <span id="catLikes-${c.id}">${c.likes}</span></span>
+      <button onclick="alert('Added to cart!')">Add to Cart</button>
     `;
     grid.appendChild(card);
   });
 }
-
-async function changeProduct(id){
+function renderTopCats(){
+  const grid = document.getElementById('topCatGrid');
+  grid.innerHTML="";
+  const top = [...cats].sort((a,b)=>b.likes-a.likes).slice(0,3);
+  top.forEach(c=>{
+    const card = document.createElement('div');
+    card.className="card";
+    card.innerHTML=`
+      <img src="${c.img}" onclick="changeCat(${c.id})">
+      <p>${c.desc} - $${c.price}</p>
+      <span class="like" onclick="likeCat(${c.id})">❤️ <span>${c.likes}</span></span>
+    `;
+    grid.appendChild(card);
+  });
+}
+async function changeCat(id){
   const res = await fetch("https://api.thecatapi.com/v1/images/search");
   const data = await res.json();
-  products[id].img = data[0].url;
-  products[id].desc = "A new adorable cat appears!";
-  products[id].price = Math.floor(Math.random()*15)+5;
-  document.getElementById(`img-${id}`).src = products[id].img;
-  document.getElementById(`desc-${id}`).textContent = `${products[id].desc} - $${products[id].price}`;
+  cats[id].img = data[0].url;
+  document.getElementById(`catImg-${id}`).src = cats[id].img;
 }
-
-function likeProduct(id){
-  products[id].likes++;
-  document.getElementById(`likes-${id}`).textContent = products[id].likes;
+function likeCat(id){
+  cats[id].likes++;
+  document.getElementById(`catLikes-${id}`).textContent = cats[id].likes;
+  renderTopCats();
+  const heart = document.getElementById(`catLike-${id}`);
+  heart.classList.add('pulse');
+  setTimeout(()=>heart.classList.remove('pulse'),300);
 }
-
-// Fetch products on load
 fetchCats();
+
+// ---------------------- TRAVEL ----------------------
+const travelDestinations = [
+  {name:"Paris, France",desc:"City of lights",price:1200,likes:5,images:["images/paris.jpg","images/paris(1).jpg"],current:0},
+  {name:"Bali, Indonesia",desc:"Tropical paradise",price:900,likes:8,images:["images/bali.jpg"],current:0},
+  {name:"Tokyo, Japan",desc:"Modern city with tradition",price:1300,likes:3,images:["images/tokyo.jpg"],current:0}
+];
+function renderTravel(){
+  const grid = document.getElementById('travelGrid');
+  grid.innerHTML="";
+  travelDestinations.forEach((t,i)=>{
+    const card = document.createElement('div');
+    card.className="card";
+    card.innerHTML=`
+      <img src="${t.images[t.current]}" id="travelImg-${i}" onclick="changeTravel(${i})">
+      <h3>${t.name}</h3>
+      <p>${t.desc}</p>
+      <p>Price: $${t.price}</p>
+      <span class="like" id="travelLike-${i}" onclick="likeTravel(${i})">❤️ <span id="travelLikes-${i}">${t.likes}</span></span>
+      <button onclick="alert('Trip booked!')">Book Trip</button>
+    `;
+    grid.appendChild(card);
+  });
+  renderTopTravel();
+}
+function renderTopTravel(){
+  const grid = document.getElementById('topTravelGrid');
+  grid.innerHTML="";
+  const top = [...travelDestinations].sort((a,b)=>b.likes-a.likes).slice(0,3);
+  top.forEach(t=>{
+    const card = document.createElement('div');
+    card.className="card";
+    card.innerHTML=`
+      <img src="${t.images[t.current]}" onclick="changeTravel(${travelDestinations.indexOf(t)})">
+      <h3>${t.name}</h3>
+      <p>${t.desc}</p>
+      <p>Price: $${t.price}</p>
+      <span class="like" onclick="likeTravel(${travelDestinations.indexOf(t)})">❤️ <span>${t.likes}</span></span>
+    `;
+    grid.appendChild(card);
+  });
+}
+function changeTravel(i){
+  travelDestinations[i].current = (travelDestinations[i].current +1) % travelDestinations[i].images.length;
+  document.getElementById(`travelImg-${i}`).src = travelDestinations[i].images[travelDestinations[i].current];
+}
+function likeTravel(i){
+  travelDestinations[i].likes++;
+  document.getElementById(`travelLikes-${i}`).textContent = travelDestinations[i].likes;
+  renderTopTravel();
+  const heart = document.getElementById(`travelLike-${i}`);
+  heart.classList.add('pulse');
+  setTimeout(()=>heart.classList.remove('pulse'),300);
+}
+renderTravel();
+
+// ---------------------- BOOKS ----------------------
+const books = [
+  {title:"The Alchemist",author:"Paulo Coelho",desc:"A journey of self-discovery",price:12,likes:7,img:"images/alchemist.jpg"},
+  {title:"1984",author:"George Orwell",desc:"Dystopian classic",price:10,likes:5,img:"images/1984.jpg"},
+  {title:"Atomic Habits",author:"James Clear",desc:"Build better habits",price:15,likes:9,img:"images/atomic.jpg"}
+];
+function renderBooks(){
+  const grid = document.getElementById('bookGrid');
+  grid.innerHTML="";
+  books.forEach((b,i)=>{
+    const card = document.createElement('div');
+    card.className="card";
+    card.innerHTML=`
+      <img src="${b.img}" id="bookImg-${i}">
+      <h3>${b.title}</h3>
+      <p>${b.desc}</p>
+      <p>Author: ${b.author}</p>
+      <p>Price: $${b.price}</p>
+      <span class="like" id="bookLike-${i}" onclick="likeBook(${i})">❤️ <span id="bookLikes-${i}">${b.likes}</span></span>
+      <button onclick="alert('Book added to cart!')">Add to Cart</button>
+    `;
+    grid.appendChild(card);
+  });
+  renderTopBooks();
+}
+function renderTopBooks(){
+  const grid = document.getElementById('topBookGrid');
+  grid.innerHTML="";
+  const top = [...books].sort((a,b)=>b.likes-a.likes).slice(0,3);
+  top.forEach(b=>{
+    const card = document.createElement('div');
+    card.className="card";
+    card.innerHTML=`
+      <img src="${b.img}">
+      <h3>${b.title}</h3>
+      <p>${b.desc}</p>
+      <p>Author: ${b.author}</p>
+      <p>Price: $${b.price}</p>
+      <span class="like" onclick="likeBook(${books.indexOf(b)})">❤️ <span>${b.likes}</span></span>
+    `;
+    grid.appendChild(card);
+  });
+}
+function likeBook(i){
+  books[i].likes++;
+  document.getElementById(`bookLikes-${i}`).textContent = books[i].likes;
+  renderTopBooks();
+  const heart = document.getElementById(`bookLike-${i}`);
+  heart.classList.add('pulse');
+  setTimeout(()=>heart.classList.remove('pulse'),300);
+}
+renderBooks();
 </script>
 
 </body>
-</html>
+    </html>
