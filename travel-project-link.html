@@ -130,18 +130,18 @@ footer {
 </footer>
 
 <script>
-// Destination data
+// Destination data with YOUR EXACT image names
 const destinations = [
-  { name:"Paris, France", desc:"City of lights and love", type:"City", price:1200, likes:0, images:["images/paris.jpg","images/paris (1).jpg"] },
-  { name:"Bali, Indonesia", desc:"Tropical paradise", type:"Beach", price:900, likes:0, images:["images/bali.jpg"] },
-  { name:"New York, USA", desc:"The city that never sleeps", type:"City", price:1500, likes:0, images:["images/new york.jpg","images/new york(1).jpg"] },
-  { name:"Tokyo, Japan", desc:"Modern city with tradition", type:"City", price:1300, likes:0, images:["images/tokyo.jpg","images/tokyo(1).jpg"] },
-  { name:"Rome, Italy", desc:"Ancient ruins and food", type:"Historical", price:1100, likes:0, images:["images/rome.jpg","images/rome(1).jpg"] },
-  { name:"Sydney, Australia", desc:"Beaches and landmarks", type:"Beach", price:1400, likes:0, images:["images/sydney.jpg"] },
-  { name:"London, UK", desc:"Historic streets & palaces", type:"City", price:1250, likes:0, images:["images/london.jpg"] },
-  { name:"Cape Town, SA", desc:"Scenic landscapes & wildlife", type:"Mountain", price:1000, likes:0, images:["images/cape town.jpg"] },
-  { name:"Rio de Janeiro, Brazil", desc:"Carnivals and mountains", type:"Beach", price:1200, likes:0, images:["images/rio.jpg","images/rio (1).jpg","images/rio (2).jpg"] },
-  { name:"Istanbul, Turkey", desc:"Where East meets West", type:"Historical", price:1150, likes:0, images:["images/istanbul.jpg","images/istanbul(1).jpg"] }
+  { name:"Paris, France", desc:"City of lights and love", type:"City", price:1200, likes:0, images:["images/paris.jpg","images/paris (1).jpg"], current:0 },
+  { name:"Bali, Indonesia", desc:"Tropical paradise", type:"Beach", price:900, likes:0, images:["images/bali.jpg"], current:0 },
+  { name:"New York, USA", desc:"The city that never sleeps", type:"City", price:1500, likes:0, images:["images/new york.jpg","images/new york(1).jpg"], current:0 },
+  { name:"Tokyo, Japan", desc:"Modern city with tradition", type:"City", price:1300, likes:0, images:["images/tokyo.jpg","images/tokyo(1).jpg"], current:0 },
+  { name:"Rome, Italy", desc:"Ancient ruins and food", type:"Historical", price:1100, likes:0, images:["images/rome.jpg","images/rome(1).jpg"], current:0 },
+  { name:"Sydney, Australia", desc:"Beaches and landmarks", type:"Beach", price:1400, likes:0, images:["images/sydney.jpg"], current:0 },
+  { name:"London, UK", desc:"Historic streets & palaces", type:"City", price:1250, likes:0, images:["images/london.jpg"], current:0 },
+  { name:"Cape Town, SA", desc:"Scenic landscapes & wildlife", type:"Mountain", price:1000, likes:0, images:["images/cape town.jpg"], current:0 },
+  { name:"Rio de Janeiro, Brazil", desc:"Carnivals and mountains", type:"Beach", price:1200, likes:0, images:["images/rio.jpg","images/rio (1).jpg","images/rio (2).jpg"], current:0 },
+  { name:"Istanbul, Turkey", desc:"Where East meets West", type:"Historical", price:1150, likes:0, images:["images/istanbul.jpg","images/istanbul(1).jpg"], current:0 }
 ];
 
 const grid = document.getElementById("destinationGrid");
@@ -151,13 +151,17 @@ let category = "All";
 // Render destinations
 function renderDestinations() {
   grid.innerHTML = "";
-  destinations.filter(d => (category==="All" || d.type===category)
-    && d.name.toLowerCase().includes(search.value.toLowerCase())
+
+  destinations.filter(d => 
+    (category==="All" || d.type===category) &&
+    d.name.toLowerCase().includes(search.value.toLowerCase())
   ).forEach((d,i)=>{
+
     const card = document.createElement("div");
     card.className = "card";
+
     card.innerHTML = `
-      <img src="${d.images[0]}" alt="${d.name}" id="img-${i}">
+      <img src="${d.images[d.current]}" alt="${d.name}" id="img-${i}">
       <h3>${d.name}</h3>
       <p>${d.desc}</p>
       <p>Price: $${d.price}</p>
@@ -165,33 +169,31 @@ function renderDestinations() {
       <button onclick="likeDestination(${i})">❤️ Like (<span id="likes-${i}">${d.likes}</span>)</button>
       <button onclick="bookTrip(${i})">✈️ Book Trip</button>
     `;
+
     grid.appendChild(card);
   });
 }
 
-// Change image dynamically
+// FIXED image changer (this is the main problem solved)
 function changeImage(index){
-  const card = grid.children[index];
-  const img = card.querySelector("img");
-  const imgs = destinations[index].images;
-  // Cycle to next image
-  const currentIndex = imgs.indexOf(img.src.split('/').slice(-1)[0]);
-  const nextIndex = (currentIndex+1)%imgs.length;
-  img.src = imgs[nextIndex];
+  let destination = destinations[index];
+  destination.current = (destination.current + 1) % destination.images.length;
+
+  document.getElementById(`img-${index}`).src = destination.images[destination.current];
 }
 
-// Like destination
+// Like
 function likeDestination(index){
   destinations[index].likes++;
   document.getElementById(`likes-${index}`).textContent = destinations[index].likes;
 }
 
-// Book trip (example)
+// Book
 function bookTrip(index){
-  alert(`Trip to ${destinations[index].name} booked successfully! 🎉`);
+  alert(`Trip to ${destinations[index].name} booked successfully! ✈️`);
 }
 
-// Filter buttons
+// Filters
 document.querySelectorAll(".filters button").forEach(b=>{
   b.onclick=()=>{
     document.querySelectorAll(".filters button").forEach(x=>x.classList.remove("active"));
@@ -201,8 +203,10 @@ document.querySelectorAll(".filters button").forEach(b=>{
   };
 });
 
+// Search
 search.oninput = renderDestinations;
 
+// Start
 renderDestinations();
 </script>
 
