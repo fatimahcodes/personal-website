@@ -225,29 +225,50 @@ for(let i=0;i<20;i++){
 }
 
 // -------------------- RENDER --------------------
-function render(){
-  booksEl.innerHTML="";
-  data.filter(b=>(category==="All"||b.c===category)&&b.t.toLowerCase().includes(search.value.toLowerCase()))
-  .forEach(b=>{
-    const d=document.createElement("div");
-    d.className="book";
-    let stars=""; for(let s=0;s<b.rating;s++) stars+="⭐";
+function renderRecommendations(){
+  const recGrid = document.getElementById("recGrid");
+  recGrid.innerHTML = "";
 
-    d.innerHTML=`
+  // simple AI: top liked + random from cart category
+  let recommended = data.sort((a,b) => b.likes - a.likes).slice(0,4);
+
+  recommended.forEach(b=>{
+    const d = document.createElement("div");
+    d.className = "book";
+
+    let stars = "";
+    for(let s=0; s<b.rating; s++) stars += "⭐";
+
+    d.innerHTML = `
       <img src="${b.img}" alt="${b.t}">
       <span class="price-badge">$${b.p}</span>
       <span class="stars">${stars}</span>
       <div class="book-content">
         <h4>${b.t}</h4>
         <p>${b.desc}</p>
-        <button onclick='add(${JSON.stringify(b)})'>Add to Cart</button>
-        <button class="like-btn" id="like-${b.id}" onclick="likeBook(${b.id})">❤️ ${b.likes}</button>
+        <button class="add-btn" data-id="${b.id}">Add to Cart</button>
+        <button class="like-btn" id="like-${b.id}">❤️ ${b.likes}</button>
       </div>
     `;
-    booksEl.appendChild(d);
+
+    recGrid.appendChild(d);
   });
-  renderRecommendations();
-}
+
+  // Add event listeners for Add to Cart buttons
+  document.querySelectorAll("#recGrid .add-btn").forEach(btn=>{
+    btn.onclick = () => {
+      const id = parseInt(btn.getAttribute("data-id"));
+      const book = data.find(b => b.id === id);
+      add(book);
+    }
+  });
+
+  // Add event listeners for like buttons
+  document.querySelectorAll("#recGrid .like-btn").forEach(btn=>{
+    const id = parseInt(btn.id.split("-")[1]);
+    btn.onclick = () => likeBook(id);
+  });
+  } 
 
 // -------------------- LIKES --------------------
 function likeBook(id){
