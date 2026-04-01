@@ -2,28 +2,30 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Fatimah Abubakar | Interactive Book Store</title> 
+<title>Fatimah Abubakar | Premium Book Store</title>
 
+<!-- Tailored styles -->
 <style>
 :root {
   --bg:#f4f4f4;
   --text:#000;
   --card:#fff;
   --primary:#4a90e2;
+  --secondary:#357ab8;
+}
+
+body {
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  transition:0.3s;
 }
 
 .dark {
   --bg:#1e1e1e;
   --text:#fff;
   --card:#2c2c2c;
-}
-
-body {
-  margin:0;
-  font-family:Arial;
-  background:var(--bg);
-  color:var(--text);
-  transition:0.3s;
 }
 
 header {
@@ -34,33 +36,11 @@ header {
   text-align:center;
 }
 
-#cart, #darkToggle {
-  position:absolute;
-  top:15px;
-}
+#darkToggle { position:absolute; left:15px; top:15px; cursor:pointer; }
+#cart { position:absolute; right:15px; top:15px; cursor:pointer; }
 
-#cart { right:15px; }
-#darkToggle { left:15px; }
-
-input {
-  padding:0.5rem;
-  width:200px;
-  border-radius:5px;
-  border:none;
-  margin-top:0.5rem;
-}
-
-.filters button {
-  margin:5px;
-  padding:0.5rem 1rem;
-  border:none;
-  border-radius:5px;
-  background:var(--primary);
-  color:white;
-  cursor:pointer;
-  transition:0.2s;
-}
-
+input { padding:0.5rem; width:200px; border-radius:5px; border:none; margin-top:0.5rem; }
+.filters button { margin:5px; padding:0.5rem 1rem; border:none; border-radius:5px; background:var(--primary); color:white; cursor:pointer; transition:0.2s;}
 .filters button.active { background:#e94e77; }
 .filters button:hover { transform:scale(1.05); }
 
@@ -75,78 +55,42 @@ input {
   background:var(--card);
   padding:1rem;
   border-radius:10px;
-  transition:0.3s;
   text-align:center;
   box-shadow:0 4px 10px rgba(0,0,0,0.1);
   position:relative;
-}
-
-.book:hover {
-  transform:translateY(-5px);
-  box-shadow:0 8px 20px rgba(0,0,0,0.2);
-}
-
-.book img { 
-  width:100%; 
-  border-radius:8px;
-  transition: transform 0.3s;
-}
-.book img:hover { transform:scale(1.05); }
-
-.book button {
-  width:100%;
-  margin-top:5px;
-  background:var(--primary);
-  color:white;
-  border:none;
-  border-radius:5px;
-  cursor:pointer;
   transition:0.3s;
 }
-.book button:hover { opacity:0.85; transform:scale(1.05); }
-
-.like-btn {
-  position:absolute;
-  top:10px;
-  right:10px;
-  background:transparent;
-  border:none;
-  cursor:pointer;
-  font-size:1.2rem;
-  transition:0.2s;
-}
+.book:hover { transform:translateY(-5px); box-shadow:0 8px 20px rgba(0,0,0,0.2);}
+.book img { width:100%; border-radius:8px; transition: transform 0.3s;}
+.book img:hover { transform:scale(1.05);}
+.book button { width:100%; margin-top:5px; background:var(--primary); color:white; border:none; border-radius:5px; cursor:pointer; transition:0.3s;}
+.book button:hover { opacity:0.85; transform:scale(1.05);}
+.like-btn { position:absolute; top:10px; right:10px; background:transparent; border:none; cursor:pointer; font-size:1.2rem; transition:0.2s; }
 .like-btn.liked { color:#e94e77; transform:scale(1.3); }
 
 #cartBox, #checkoutBox {
-  position:fixed;
-  right:10px;
-  top:70px;
-  width:300px;
-  background:var(--card);
-  padding:1rem;
-  display:none;
-  border-radius:10px;
-  box-shadow:0 4px 15px rgba(0,0,0,0.2);
-  max-height:80vh;
-  overflow-y:auto;
+  position:fixed; right:10px; top:70px; width:350px;
+  background:var(--card); padding:1rem; display:none;
+  border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.2);
+  max-height:80vh; overflow-y:auto;
 }
 
-#cartList li {
-  transition: all 0.3s ease;
-}
+#cartList li { transition: all 0.3s ease; }
 
-footer {
-  background:#333;
-  color:white;
-  padding:1rem;
-  text-align:center;
-}
+footer { background:#333; color:white; padding:1rem; text-align:center;}
+footer a { color:white; margin:0 0.5rem; text-decoration:none;}
+footer a:hover { text-decoration:underline;}
+
+.star { color:gold; font-size:1rem; margin:0 1px; }
+
+.recommendations { padding:1rem; background:var(--card); margin:1rem; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1);}
+.recommendations h3 { margin-bottom:0.5rem; }
 
 @media(max-width:600px){
   input { width:90%; margin-top:10px; }
-  header { padding:1rem; }
-  #cart, #darkToggle { position:static; margin:5px; }
-  .grid { grid-template-columns:1fr; }
+  header { padding:1rem;}
+  #cart, #darkToggle { position:static; margin:5px;}
+  .grid { grid-template-columns:1fr;}
   #cartBox, #checkoutBox { width:90%; top:70px; }
 }
 </style>
@@ -156,7 +100,7 @@ footer {
 
 <header>
 <button id="darkToggle">🌙</button>
-<h2>Fatimah Interactive Book Store</h2>
+<h2>Fatimah Premium Book Store</h2>
 <p>Contact: 08074850779 | Email: abubakarfatimah240@gmail.com</p>
 
 <input id="search" placeholder="Search books...">
@@ -172,6 +116,11 @@ footer {
 </header>
 
 <div class="grid" id="books"></div>
+
+<div class="recommendations" id="recommendations">
+<h3>Recommended for You:</h3>
+<div id="recGrid" class="grid"></div>
+</div>
 
 <!-- Cart Box -->
 <div id="cartBox">
@@ -194,22 +143,20 @@ footer {
 <h4>Order Summary</h4>
 <ul id="checkoutList"></ul>
 <p id="checkoutTotal"></p>
-<button type="submit">Place Order</button>
+<button type="submit">Pay Now 💳</button>
 <button type="button" onclick="closeCheckout()">Cancel</button>
 </form>
 </div>
 
 <footer>
 <p>© 2026 Fatimah Abubakar</p>
-<p>
-<a href="#">Instagram</a> | 
-<a href="#">WhatsApp</a>
-</p>
+<p><a href="#">Instagram</a> | <a href="#">WhatsApp</a></p>
 </footer>
 
+<script src="https://js.paystack.co/v1/inline.js"></script>
 <script>
-let data=[];
-let cart=[];
+// -------------------- DATA --------------------
+let data=[], cart=[];
 const booksEl = document.getElementById("books");
 const search = document.getElementById("search");
 const list = document.getElementById("list");
@@ -218,18 +165,18 @@ const cartBtn = document.getElementById("cart");
 const checkoutBox = document.getElementById("checkoutBox");
 let category="All";
 
-// Sample book images & descriptions
+// Replace these with your local images
 const sampleBooks=[
-  {title:"Cat Adventures",img:"https://covers.openlibrary.org/b/id/8221256-L.jpg"},
-  {title:"Learning HTML",img:"https://covers.openlibrary.org/b/id/8319250-L.jpg"},
-  {title:"Travel Stories",img:"https://covers.openlibrary.org/b/id/8091013-L.jpg"},
-  {title:"Mystery Novel",img:"https://covers.openlibrary.org/b/id/8315691-L.jpg"},
-  {title:"Science for Kids",img:"https://covers.openlibrary.org/b/id/8281992-L.jpg"},
-  {title:"Fairy Tales",img:"https://covers.openlibrary.org/b/id/8231853-L.jpg"},
-  {title:"History of Space",img:"https://covers.openlibrary.org/b/id/8369251-L.jpg"},
-  {title:"Math for Beginners",img:"https://covers.openlibrary.org/b/id/8353012-L.jpg"},
-  {title:"World Travel Guide",img:"https://covers.openlibrary.org/b/id/8291012-L.jpg"},
-  {title:"Adventures in Coding",img:"https://covers.openlibrary.org/b/id/8301013-L.jpg"}
+  {title:"The Alchemist",img:"images/the-alchemist.jpg"},
+  {title:"1984",img:"images/1984.jpg"},
+  {title:"Atomic Habits",img:"images/atomic-habits.jpg"},
+  {title:"To Kill a Mockingbird",img:"images/to-kill-a-mockingbird.jpg"},
+  {title:"Pride and Prejudice",img:"images/pride-and-prejudice.jpg"},
+  {title:"Harry Potter",img:"images/harry-potter1.jpg"},
+  {title:"The Lord of the Rings",img:"images/lotr.jpg"},
+  {title:"The Great Gatsby",img:"images/the-great-gatsby.jpg"},
+  {title:"Thinking Fast and Slow",img:"images/thinking-fast-slow.jpg"},
+  {title:"The Hobbit",img:"images/the-hobbit.jpg"}
 ];
 
 const dynamicDesc = [
@@ -246,9 +193,8 @@ const dynamicDesc = [
 ];
 
 const categories=["Storybook","Learning","Travel"];
-
-// Create 30 books
-for(let i=0;i<30;i++){
+// Generate sample data
+for(let i=0;i<20;i++){
   const book = sampleBooks[i % sampleBooks.length];
   data.push({
     id:i,
@@ -257,41 +203,36 @@ for(let i=0;i<30;i++){
     img: book.img,
     p: Math.floor(Math.random()*15)+5,
     desc: dynamicDesc[i % dynamicDesc.length],
-    likes:0
+    likes:Math.floor(Math.random()*100),
+    rating: Math.floor(Math.random()*5)+1
   });
 }
 
-// Render books
+// -------------------- RENDER --------------------
 function render(){
   booksEl.innerHTML="";
   data.filter(b=>(category==="All"||b.c===category)&&b.t.toLowerCase().includes(search.value.toLowerCase()))
   .forEach(b=>{
     const d=document.createElement("div");
     d.className="book";
+    
+    let stars="";
+    for(let s=0;s<b.rating;s++) stars+="⭐";
+    
     d.innerHTML=`
       <img src="${b.img}" id="img-${b.id}" alt="${b.t}">
       <h4>${b.t}</h4>
-      <p id="desc-${b.id}">${b.desc} - $${b.p}</p>
-      <button onclick='changeCover(${b.id})'>Change Book Cover</button>
+      <p>${b.desc} - $${b.p}</p>
+      <p>${stars}</p>
       <button onclick='add(${JSON.stringify(b)})'>Add to Cart</button>
       <button class="like-btn" id="like-${b.id}" onclick="likeBook(${b.id})">❤️ ${b.likes}</button>
     `;
     booksEl.appendChild(d);
   });
+  renderRecommendations();
 }
 
-// Change book cover dynamically
-function changeCover(id){
-  const newImg = sampleBooks[Math.floor(Math.random()*sampleBooks.length)].img;
-  const newDesc = dynamicDesc[Math.floor(Math.random()*dynamicDesc.length)];
-  const newPrice = Math.floor(Math.random()*15)+5;
-  const book = data.find(b=>b.id===id);
-  book.img=newImg; book.desc=newDesc; book.p=newPrice;
-  document.getElementById(`img-${id}`).src=newImg;
-  document.getElementById(`desc-${id}`).textContent=`${newDesc} - $${newPrice}`;
-}
-
-// Like book
+// -------------------- LIKES --------------------
 function likeBook(id){
   const book = data.find(b=>b.id===id);
   book.likes++;
@@ -299,9 +240,10 @@ function likeBook(id){
   btn.textContent=`❤️ ${book.likes}`;
   btn.classList.add("liked");
   setTimeout(()=>btn.classList.remove("liked"),300);
+  renderRecommendations();
 }
 
-// Cart functions
+// -------------------- CART --------------------
 function add(b){
   let found = cart.find(i=>i.t===b.t);
   if(found){found.q++;}
@@ -326,22 +268,14 @@ function update(){
 }
 
 function remove(i){ cart.splice(i,1); save(); update(); }
-
 function save(){ localStorage.setItem("cart",JSON.stringify(cart)); }
 
-document.querySelectorAll(".filters button").forEach(b=>{
-  b.onclick=()=>{
-    document.querySelectorAll(".filters button").forEach(x=>x.classList.remove("active"));
-    b.classList.add("active");
-    category=b.getAttribute("data");
-    render();
-  };
-});
+cartBtn.onclick=()=>{ 
+  const box=document.getElementById("cartBox"); 
+  box.style.display=box.style.display==="block"?"none":"block"; 
+}
 
-search.oninput=render;
-
-cartBtn.onclick=()=>{ const box=document.getElementById("cartBox"); box.style.display=box.style.display==="block"?"none":"block"; }
-
+// -------------------- CHECKOUT --------------------
 function showCheckout(){
   if(cart.length===0) return alert("Cart is empty");
   document.getElementById("checkoutList").innerHTML="";
@@ -360,17 +294,69 @@ function closeCheckout(){ checkoutBox.style.display="none"; }
 
 document.getElementById("checkoutForm").onsubmit=function(e){
   e.preventDefault();
-  alert("Order placed successfully 🎉\nThank you, "+document.getElementById("customerName").value+"!");
-  cart=[]; update(); closeCheckout();
+  payWithPaystack();
 }
 
-// Dark mode toggle
+// -------------------- PAYSTACK PAYMENT --------------------
+function payWithPaystack(){
+  let email=document.getElementById("customerEmail").value;
+  let t=cart.reduce((sum,i)=>sum+i.p*i.q,0)*100; // in kobo
+  var handler = PaystackPop.setup({
+    key: 'YOUR_PUBLIC_KEY', // replace with your paystack public key
+    email: email,
+    amount: t,
+    currency: "NGN",
+    callback: function(response){
+      alert('Payment Successful! Reference: '+response.reference);
+      cart=[]; update(); closeCheckout();
+    },
+    onClose: function(){
+      alert('Payment window closed.');
+    }
+  });
+  handler.openIframe();
+}
+
+// -------------------- SEARCH & FILTER --------------------
+document.querySelectorAll(".filters button").forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll(".filters button").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    category=b.getAttribute("data");
+    render();
+  };
+});
+search.oninput=render;
+
+// -------------------- DARK MODE --------------------
 document.getElementById("darkToggle").onclick=()=>{
   document.body.classList.toggle("dark");
   localStorage.setItem("theme",document.body.classList.contains("dark"));
 };
 if(localStorage.getItem("theme")==="true"){ document.body.classList.add("dark"); }
 
+// -------------------- RECOMMENDATIONS --------------------
+function renderRecommendations(){
+  const recGrid=document.getElementById("recGrid");
+  recGrid.innerHTML="";
+  // simple AI: top liked + random from cart category
+  let recommended = data.sort((a,b)=>b.likes-a.likes).slice(0,4);
+  recommended.forEach(b=>{
+    const d=document.createElement("div");
+    d.className="book";
+    let stars=""; for(let s=0;s<b.rating;s++) stars+="⭐";
+    d.innerHTML=`
+      <img src="${b.img}" alt="${b.t}">
+      <h4>${b.t}</h4>
+      <p>${b.desc}</p>
+      <p>${stars}</p>
+      <button onclick='add(${JSON.stringify(b)})'>Add to Cart</button>
+    `;
+    recGrid.appendChild(d);
+  });
+}
+
+// -------------------- INITIAL RENDER --------------------
 render(); update();
 </script>
 
