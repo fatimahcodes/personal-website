@@ -18,20 +18,22 @@
   --text:#fff;
   --shadow: rgba(0,0,0,0.5);
 }
-body {
-  margin:0; font-family:Arial; background:var(--bg); color:var(--text); transition:0.3s;
-}
+body { margin:0; font-family:Arial; background:var(--bg); color:var(--text); transition:0.3s; }
+
 /* HEADER */
 header {
   background: var(--primary); color:white; display:flex; justify-content:space-between; align-items:center; padding:1rem; flex-wrap:wrap;
 }
 header h1 { margin:0; font-size:1.5rem; }
-header .btn { background: var(--accent); border:none; padding:8px 12px; cursor:pointer; margin-left:5px; }
+header .btn { background: var(--accent); border:none; padding:8px 12px; cursor:pointer; margin-left:5px; border-radius:5px; }
+
 /* SEARCH */
 #searchBar { text-align:center; margin:15px; }
 #searchInput { padding:10px; width:80%; max-width:400px; border-radius:5px; border:1px solid #ccc; }
+
 /* GRID */
 .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; padding:15px; }
+
 /* CARD */
 .card { background: var(--card); border-radius:10px; overflow:hidden; position:relative; box-shadow:0 4px 15px var(--shadow); transition:0.3s; }
 .card:hover { transform: translateY(-5px) scale(1.02); box-shadow:0 8px 20px var(--shadow);}
@@ -44,15 +46,23 @@ header .btn { background: var(--accent); border:none; padding:8px 12px; cursor:p
 .stars { position:absolute; bottom:10px; left:10px; background:rgba(255,255,255,0.9); padding:3px 6px; border-radius:5px; font-size:0.9rem; }
 .card button { width:100%; margin-top:5px; padding:8px; background:var(--primary); color:white; border:none; border-radius:5px; cursor:pointer; transition:0.2s; }
 .card button:hover { opacity:0.85; }
+
 /* CART */
 #cart { position:fixed; top:70px; right:10px; width:300px; max-height:80vh; background:var(--card); padding:10px; border-radius:10px; box-shadow:0 4px 20px var(--shadow); overflow-y:auto; display:none; z-index:100; }
 #cart h3 { margin-top:0; text-align:center; }
 #cart ul { list-style:none; padding:0; margin:0; }
 #cart li { margin:5px 0; display:flex; justify-content:space-between; }
+
 /* CHECKOUT */
-#checkout { display:none; padding:20px; }
+#checkout { display:none; padding:20px; background:var(--card); max-width:400px; margin:20px auto; border-radius:10px; box-shadow:0 4px 15px var(--shadow); }
+
+/* CATEGORY BANNERS */
+.category-header { text-align:center; margin-top:30px; }
+.category-header img { width:80px; height:80px; object-fit:cover; border-radius:50%; margin-bottom:10px; }
+
 /* FOOTER */
 footer { background:#333; color:white; text-align:center; padding:10px; margin-top:20px; }
+
 /* RESPONSIVE */
 @media(max-width:600px){
   #searchInput { width:90%; }
@@ -75,16 +85,28 @@ footer { background:#333; color:white; text-align:center; padding:10px; margin-t
   <input type="text" id="searchInput" placeholder="Search all items..." oninput="renderAll()">
 </div>
 
-<h2 style="text-align:center;">📚 Books</h2>
+<div class="category-header">
+  <img src="images/books-icon.png" alt="Books">
+  <h2>📚 Books</h2>
+</div>
 <div class="grid" id="bookGrid"></div>
 
-<h2 style="text-align:center;">✈️ Travel</h2>
+<div class="category-header">
+  <img src="images/travel-icon.png" alt="Travel">
+  <h2>✈️ Travel</h2>
+</div>
 <div class="grid" id="travelGrid"></div>
 
-<h2 style="text-align:center;">📖 Storybooks</h2>
+<div class="category-header">
+  <img src="images/storybooks-icon.png" alt="Storybooks">
+  <h2>📖 Storybooks</h2>
+</div>
 <div class="grid" id="storyGrid"></div>
 
-<h2 style="text-align:center;">⭐ Recommended For You</h2>
+<div class="category-header">
+  <img src="images/recommend-icon.png" alt="Recommended">
+  <h2>⭐ Recommended For You</h2>
+</div>
 <div class="grid" id="recGrid"></div>
 
 <!-- CART -->
@@ -111,7 +133,7 @@ footer { background:#333; color:white; text-align:center; padding:10px; margin-t
 
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <script>
-// ------------------ DATA ------------------
+// --------- DATA ---------
 let booksData = [
   {title:"The Alchemist",price:15,rating:5,img:"images/the-alchemist.jpg",likes:100},
   {title:"1984",price:12,rating:4,img:"images/1984.jpg",likes:90},
@@ -132,12 +154,12 @@ let storyData = [
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-// ------------------ FUNCTIONS ------------------
+// --------- FUNCTIONS ---------
 function renderAll(){
   const search = document.getElementById("searchInput").value.toLowerCase();
-  renderSection(booksData, "bookGrid", search);
-  renderSection(travelData, "travelGrid", search);
-  renderSection(storyData, "storyGrid", search);
+  renderSection(booksData,"bookGrid",search);
+  renderSection(travelData,"travelGrid",search);
+  renderSection(storyData,"storyGrid",search);
   renderRecommendations();
 }
 
@@ -242,8 +264,9 @@ function pay(){
   });
 }
 
-// INITIAL RENDER
+// --------- INITIAL RENDER ---------
 renderAll(); renderCart();
 </script>
+
 </body>
   </html>
